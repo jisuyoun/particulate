@@ -1,5 +1,6 @@
 package com.exem.particulate.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
@@ -14,13 +15,23 @@ public class ParticulateServiceImpl implements ParticulateService {
     
     private final ParticulateMapper partMapper;
 
+    // 영업소별 미세먼지 농도 삽입
     @Override
-    public Map<String, Object> selectTableYN() {
-        System.out.println("Mapper 메소드 호출 전");
-        Map<String, Object> result = partMapper.selectTableYN();
-        System.out.println(result);
-        System.out.println("Mapper 메소드 호출 후");
-        return result;
+    public void insertPartInfo(List<String> csvList) throws Exception {
+        partMapper.insertPartInfo(csvList);
     }
+
+    // 점검일 삽입
+    @Override
+    public void insertInspection(List<String> csvList) throws Exception {
+        partMapper.insertInspection(csvList);
+    }
+
+    // 미세먼지 등급 삽입
+    @Override
+    public void insertAlertInfo(List<String> csvList) throws Exception {
+        partMapper.insertAlertInfo(csvList);
+    }
+
 
 }

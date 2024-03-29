@@ -1,9 +1,15 @@
 package com.exem.particulate.service;
 
-import java.util.Map;
+import java.util.List;
 
 public interface ParticulateService {
 
-    Map<String, Object> selectTableYN();
-    
+    // 영업소별 미세먼지 농도 삽입
+    void insertPartInfo(List<String> csvList) throws Exception;
+
+    // 점검일 삽입
+    void insertInspection(List<String> csvList) throws Exception;
+
+    // 미세먼지 등급 삽입
+    void insertAlertInfo(List<String> csvList) throws Exception;
 }

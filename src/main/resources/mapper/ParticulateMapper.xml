@@ -1,8 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.exem.particulate.mapper.ParticulateMapper">
-	<select id="selectTableYN" resultType="java.util.HashMap">
-	        SELECT YNID, YN
-            FROM TABLEYN
+
+	<!-- 영업소별 미세먼지 농도 삽입 -->
+	<select id="insertPartInfo" parameterType="java.util.HashMap">
+	    INSERT INTO TB_PARTICULATE_INFO (city, station, particulate, fineParticulate, regDt) 
+		VALUES("서울시", #{csvList[1]}, #{csvList[3]}, #{csvList[4]}, #{csvList[0]})
+	</select>
+
+	<!-- 점검일 삽입 -->
+	<select id="insertInspection" parameterType="java.util.HashMap">
+	    INSERT INTO TB_INSPECTION_INFO (city, station, regDT) 
+		VALUES("서울시", #{csvList[1]}, #{csvList[0]})
+	</select>
+
+	<!-- 미세먼지 등급 삽입 -->
+	<select id="insertAlertInfo" parameterType="java.util.HashMap">
+	    INSERT INTO TB_ALERT_INFO (city, station, grade, alertDT) 
+		VALUES("서울시", #{csvList[1]}, #{csvList[5]}, #{csvList[0]})
 	</select>
 </mapper>
