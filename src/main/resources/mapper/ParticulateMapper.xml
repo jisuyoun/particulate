@@ -3,20 +3,29 @@
 <mapper namespace="com.exem.particulate.mapper.ParticulateMapper">
 
 	<!-- 영업소별 미세먼지 농도 삽입 -->
-	<select id="insertPartInfo" parameterType="java.util.HashMap">
+	<insert id="insertPartInfo" parameterType="java.util.HashMap">
 	    INSERT INTO TB_PARTICULATE_INFO (city, station, particulate, fineParticulate, regDt) 
 		VALUES("서울시", #{csvList[1]}, #{csvList[3]}, #{csvList[4]}, #{csvList[0]})
+	</insert>
+
+	<!-- 영업소별 미세먼지 농도 전 체크 -->
+	<select id="duplPartInfo" parameterType="java.util.HashMap" resultType="Int">
+		SELECT COUNT(*)
+		FROM TB_PARTICULATE_INFO
+		WHERE city='서울시'
+			AND station=#{csvList[1]}
+			AND regDt=#{csvList[0]}
 	</select>
 
 	<!-- 점검일 삽입 -->
-	<select id="insertInspection" parameterType="java.util.HashMap">
+	<insert id="insertInspection" parameterType="java.util.HashMap">
 	    INSERT INTO TB_INSPECTION_INFO (city, station, type, regDT) 
 		VALUES("서울시", #{csvList[1]}, #{csvList[5]}, #{csvList[0]})
-	</select>
+	</insert>
 
 	<!-- 미세먼지 등급 삽입 -->
-	<select id="insertAlertInfo" parameterType="java.util.HashMap">
+	<insert id="insertAlertInfo" parameterType="java.util.HashMap">
 	    INSERT INTO TB_ALERT_INFO (city, station, grade, alertDT) 
 		VALUES("서울시", #{csvList[1]}, #{csvList[5]}, #{csvList[0]})
-	</select>
+	</insert>
 </mapper>

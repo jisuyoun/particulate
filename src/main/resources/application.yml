@@ -4,19 +4,18 @@ spring:
     url: jdbc:mysql://localhost:3306/exemtest?useUnicode=true&serverTimezone=Asia/Seoul
     username: root
     password: root
+  mvc:
+    view:
+      prefix: /WEB-INF/views/
+      suffix: .jsp
 
-# 새로고침시 바로 페이지 변경을 보여줌
-#  devtools:
-#    livereload:
-#      enabled: true
-#    restart:
-#      enabled: false
+server:
+  port: 8080
+  servlet:
+    jsp:
+      init-parameters:
+        development: true
 
-#  thymeleaf:
-#    cache: false
-#    enabled: true
-#    prefix: classpath:/templates/html/
-#    suffix: .html
 
 mybatis:
   mapper-locations: classpath:mapper/**/*.xml

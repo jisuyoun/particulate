@@ -40,7 +40,7 @@ public class ParticulateServiceImpl implements ParticulateService {
             log.info("======= particulate 시작 ======");
 
             Path dir = Paths.get("src\\main\\resources\\csv");
-
+            
             try (DirectoryStream<Path> csvFile = Files.newDirectoryStream(dir, "*.csv")) {
                 for (Path entry : csvFile) {
                     try (BufferedReader br = Files.newBufferedReader(entry)) {
@@ -54,7 +54,7 @@ public class ParticulateServiceImpl implements ParticulateService {
                         int grade3Cnt = 0;
                         int grade4Cnt = 0;
 
-                        Map<String, Integer> gradeMap = new HashMap<>();
+                        List<Integer> gradeList = new ArrayList<>();
 
                         while ((line = br.readLine()) != null) {
                             
@@ -71,11 +71,19 @@ public class ParticulateServiceImpl implements ParticulateService {
                             if (dateTime.getHour() == 24) {
                                 dateTime = dateTime.withHour(0).plusDays(1);
                             }
-
+                            
                             dateTimeStr = dateTime.format(formatter); // 다시 문자열로 변환
 
                             csvList.set(0, dateTimeStr);
                             // ==== 24시를 다음날 00시로 변경해준다. end ==== //
+                             
+                            // 데이터를 작업하기 전 중복체크를 진행한다.
+                            boolean partFlag = duplPartInfo(csvList);
+
+                            if (partFlag) {
+                                log.info(csvList.get(0) + "시 서울시 " + csvList.get(1) + " 데이터는 중복입니다.");
+                                continue;
+                            }
                            
                             String inspectionType = ""; // 측정기 점검 여부
 
@@ -113,8 +121,9 @@ public class ParticulateServiceImpl implements ParticulateService {
                                         }
 
                                         csvList = modifiableList; // 점검일에 0을 넣은 리스트로 변경
+                                        
                                     } catch (Exception e) {
-                                        log.error("에러 => 점검일 농도 0으로 만드는 중 에러 발생");
+                                        log.error("에러 => 점검일 농도 0으로 만드는 중 에러 발생 " + e);
                                         e.printStackTrace();
                                     }
                                     try {
@@ -141,28 +150,32 @@ public class ParticulateServiceImpl implements ParticulateService {
                                     } catch (Exception e) {
                                         log.error("에러 => 점검일 DB 등록 중 에러 발생");
                                     }
+
+                                    int partValue = Integer.parseInt(csvList.get(3));
                                     
-                                    if (Integer.parseInt(csvList.get(3)) >= 300) {
+                                    if (partValue >= 300) {
                                         // 미세먼지 경보일 경우, 주의보는 cnt 0으로 바꿔준다.
                                         grade2Cnt++;
                                         grade4Cnt = 0;
-                                    } else if (Integer.parseInt(csvList.get(3)) >= 150) {
+                                    } else if (partValue < 300 && partValue >= 150) {
                                         // 미세먼지 주의보일 경우
-                                        grade2Cnt++;
+                                        grade2Cnt = 0;
                                         grade4Cnt++;
                                     } else {
                                         // 미세먼지 경보도 주의보도 아닐 경우
                                         grade2Cnt = 0;
                                         grade4Cnt = 0;
                                     }
+
+                                    int fineValue = Integer.parseInt(csvList.get(4));
                             
-                                    if (Integer.parseInt(csvList.get(4)) >= 150) {
+                                    if (fineValue >= 150) {
                                         // 초미세먼지 경보일 경우, 주의보는 cnt 0으로 만들어준다.
                                         grade1Cnt++;
                                         grade3Cnt = 0;
-                                    } else if (Integer.parseInt(csvList.get(4)) >= 75) {
+                                    } else if (fineValue < 150 && fineValue >= 75) {
                                         // 초미세먼지 주의보일 경우
-                                        grade1Cnt++;
+                                        grade1Cnt = 0;
                                         grade3Cnt++;
                                     } else {
                                         // 초미세먼지 경보도 주의보도 아닐 경우
@@ -170,51 +183,67 @@ public class ParticulateServiceImpl implements ParticulateService {
                                         grade3Cnt = 0;
                                     }
 
-                                    gradeMap.put("grade1Cnt", grade1Cnt);
-                                    gradeMap.put("grade2Cnt", grade2Cnt);
-                                    gradeMap.put("grade3Cnt", grade3Cnt);
-                                    gradeMap.put("grade4Cnt", grade4Cnt);
+                                    gradeList.add(grade1Cnt);
+                                    gradeList.add(grade2Cnt);
+                                    gradeList.add(grade3Cnt);
+                                    gradeList.add(grade4Cnt);
 
-                                    // 미세먼지 등급을 알려주며, 등급을 저장한다.
-                                    alertGrade(gradeMap, csvList);
+                                    // 미세먼지의 등급을 알아본다.
+                                    alertGrade(gradeList, csvList);
+                                    
                                 }
-                                
+
                                 // 각 측정소 별 미세먼지와 초미세먼지 농도를 삽입한다.
                                 partMapper.insertPartInfo(csvList);
+                                
 
                             } catch (Exception e) {
-                                log.error("에러 => 측정소별 농도 넣는 중 에러 발생");
+                                log.error("에러 => 측정소별 농도 넣는 중 에러 발생 " + e);
                                 e.printStackTrace();
                             }
                         }                        
 
                     }
+        
                 }
             }
         } catch (IOException e) {
-            log.error("에러 => csv 파일 찾는 중 에러 발생");
-            System.out.println(e);
+            log.error("에러 => csv 파일 찾는 중 에러 발생 " + e);
+            e.printStackTrace();
+        }
+    }
+
+    // 측정데이터를 넣기 전 중복 체크, 중복체크는 시, 영업소, 날짜를 기준으로 중복 체크를 진행한다.
+    private boolean duplPartInfo(List<String> csvList) {
+
+        int duplChk = partMapper.duplPartInfo(csvList);
+
+        boolean result = false;
+
+        if (duplChk != 0) {
+            result = true;
         }
 
+        return result;
     }
 
     // 미세먼지 등급을 알려주며, 등급을 저장한다.
-    private void alertGrade(Map<String, Integer> gradeMap, List<String> csvList) {
+    private List<String> alertGrade(List<Integer> gradeList, List<String> csvList) {
             
         String grade = "";
 
-        int grade1Cnt = gradeMap.get("grade1Cnt");
-        int grade2Cnt = gradeMap.get("grade2Cnt");
-        int grade3Cnt = gradeMap.get("grade3Cnt");
-        int grade4Cnt = gradeMap.get("grade4Cnt");
+        int grade1Cnt = gradeList.get(0);
+        int grade2Cnt = gradeList.get(1);
+        int grade3Cnt = gradeList.get(2);
+        int grade4Cnt = gradeList.get(3);
 
         if (grade1Cnt >= 2) {
             grade = "1";
         } else if (grade2Cnt >= 2) {
             grade = "2";
-        } else if (grade3Cnt >= 3) {
+        } else if (grade3Cnt >= 2) {
             grade = "3";
-        } else if (grade4Cnt >= 4) {
+        } else if (grade4Cnt >= 2) {
             grade = "4";
         } else {
             grade = "";
@@ -232,9 +261,11 @@ public class ParticulateServiceImpl implements ParticulateService {
                 partMapper.insertAlertInfo(csvList);
 
             } catch (Exception e) {
-                log.error("에러 => 미세먼지 경보 중 에러 발생");
+                log.error("에러 => 미세먼지 경보 중 에러 발생 " + e);
                 e.printStackTrace();
             }
         }
+        return csvList;
     }
+
 }
