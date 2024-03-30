@@ -14,4 +14,5 @@ public interface ParticulateMapper {
 
     // 미세먼지 등급 삽입
     void insertAlertInfo(List<String> csvList);
+
 }

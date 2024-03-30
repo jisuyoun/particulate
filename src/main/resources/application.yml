@@ -23,3 +23,10 @@ mybatis:
   configuration:
     map-underscore-to-camel-case: true
   type-aliases-package: com.exem.particulate.domain
+
+logging:
+  level:
+    root: info
+  charset:
+    console: UTF-8
+    file: UTF-8
