@@ -23,7 +23,24 @@ public class ParticulateServiceImpl implements ParticulateService {
 
     // 점검일 삽입
     @Override
-    public void insertInspection(List<String> csvList) throws Exception {
+    public void insertInspection(List<String> csvList, String inspectionType) throws Exception {
+
+        switch (inspectionType) {
+            case "dual": 
+                inspectionType = "모든 측정기";
+                break;
+
+            case "part":
+                inspectionType = "미세먼지 측정기";
+                break;
+            
+            default:
+                inspectionType = "초미세먼지 측정기";
+                break;
+        }
+
+        csvList.add(inspectionType);
+
         partMapper.insertInspection(csvList);
     }
 

@@ -10,8 +10,8 @@
 
 	<!-- 점검일 삽입 -->
 	<select id="insertInspection" parameterType="java.util.HashMap">
-	    INSERT INTO TB_INSPECTION_INFO (city, station, regDT) 
-		VALUES("서울시", #{csvList[1]}, #{csvList[0]})
+	    INSERT INTO TB_INSPECTION_INFO (city, station, type, regDT) 
+		VALUES("서울시", #{csvList[1]}, #{csvList[5]}, #{csvList[0]})
 	</select>
 
 	<!-- 미세먼지 등급 삽입 -->

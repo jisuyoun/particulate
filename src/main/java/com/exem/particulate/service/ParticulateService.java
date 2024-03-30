@@ -8,7 +8,7 @@ public interface ParticulateService {
     void insertPartInfo(List<String> csvList) throws Exception;
 
     // 점검일 삽입
-    void insertInspection(List<String> csvList) throws Exception;
+    void insertInspection(List<String> csvList, String inspectionType) throws Exception;
 
     // 미세먼지 등급 삽입
     void insertAlertInfo(List<String> csvList) throws Exception;
