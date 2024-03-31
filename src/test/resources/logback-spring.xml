@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- console에 출력하기 -->
+    <appender name="STDOUT"
+              class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%boldMagenta(%d{MM-dd HH:mm:ss}) [%boldYellow(%-5level)] %cyan(%logger{5}.%M) - %msg %n</pattern>
+        </encoder>
+    </appender>
+    
+    <!-- 파일 저장 --> 
+    <property name="LOG_PATH" value="src\\main\\resources\\logs"/>
+    <property name="LOG_FILE_NAME" value="errorLog"/>
+    <property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [traceId=%X{traceId}] [%thread] [%logger{40}] - %msg%n"/>
+
+    <appender name="error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 에러는 파일로 따로 
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+-->
+        <fileNamePattern>${LOG_PATH}/${LOG_FILE_NAME}.log</fileNamePattern>
+
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <charset>UTF-8</charset>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <fileNamePattern>${LOG_PATH}/%d{yyyy-MM, aux}/${LOG_FILE_NAME}.%d{yyyy-MM-dd}.log</fileNamePattern>
+                <totalSizeCap>20GB</totalSizeCap>
+        </rollingPolicy>
+	</appender>
+
+    
+    <logger name="jdbc" level="OFF" />
+    <logger name="jdbc.sqlonly" level="OFF" />
+    <logger name="jdbc.sqltiming" level="OFF" />
+    <logger name="jdbc.audit" level="OFF" />
+    <logger name="jdbc.resultset" level="OFF" />
+    <logger name="jdbc.resultsettable" level="OFF" />
+    <logger name="jdbc.connection" level="OFF" />
+    
+    <root level="ERROR">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="error" />
+    </root>
+</configuration>

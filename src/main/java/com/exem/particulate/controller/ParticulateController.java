@@ -1,17 +1,12 @@
 package com.exem.particulate.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 
 import com.exem.particulate.service.ParticulateService;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 
@@ -30,6 +25,9 @@ public class ParticulateController {
     public void particulate() {
 
         try {
+            // 처음 실행시키는 것인지 확인
+            partService.checkTable();
+
             partService.particulate();
         } catch (Exception e) {
             log.error("Controller 오류 발생 " + e);

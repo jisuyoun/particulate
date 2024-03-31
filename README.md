@@ -1,42 +1,83 @@
 # 미세먼지 경보 시스템   
 
+<br />
+
+## 목차   
+
+[사용 기술](#🛠️-사용-기술)   
+
+[데이터 설계](#📊-데이터-설계)
+
+[진행 과정](#🔎-진행-과정)   
+
+[주요 메소드](#✨-주요-메소드)   
+
+[개선할 점](#✍️개선할-점)
+
+[추후 추가 예정](#📋-추후-추가-예정)
+
+
+<br />
+
 ## 🛠️ 사용 기술   
 - Java 17
 - SpringBoot 3.1.10
 - MySQL
 - vscode   
 
-<br>
+<br />
 
 ## 📊 데이터 설계   
-![image](https://github.com/jisuyoun/particulate/assets/122525676/51a651c8-6d69-42d7-b60a-8b7f4c03a018)
+스키마명은 **particulate** 입니다.
 
-- **tb_station_info**: 영업소가 있는 시들을 넣었습니다.
+![image](https://github.com/jisuyoun/particulate/assets/122525676/37eb8bf1-4889-4913-ba00-dee9a0d907a8)
+
+- **tb_city_info**: 영업소가 있는 지역들을 넣었습니다.
+- **tb_station_info**: 영업소를 넣었습니다.
 - **tb_inspection_info**: 각 영업소의 미세먼지, 초미세먼지 측정기의 점검 시기를 저장합니다.
 - **tb_particulate_info**: 각 영업소의 미세먼지, 초미세먼지 농도를 저장합니다.
 - **tb_alert_info**: 미세먼지 및 초미세먼지의 경보, 주의보 정보를 저장합니다.   
 
-<br>
+<br />
 
 ## 🔎 진행 과정   
-스프링부트를 실행시키면 csv 파일을 열어 데이터를 DB에 넣는 작업이 진행되도록 하였습니다.
+스프링부트를 실행시켰을 때 particulate 스키마만 만들어둔 후 필요한 테이블을 모두 CREATE하여  
+TB_CITY_INFO에 필요한 지역들을 LIST에 넣은 후 정보를 테이블에 넣어주었고,   
+TB_STATION_INFO에 넣을 영업소들은 영업소 정보가 담긴 CSV 파일을 열어 해당 값들을 넣어주도록 하였습니다.   
+👉 TB_CITY_INFO에 필요한 지역들 중 서울만 넣었습니다.    
+<span style="color:gray;font-size:10pt;">서울시 데이터만 다루는 것이기 때문에 다른 지역은 넣지 않았습니다.</span>  
+👉 TB_STATION_INFO는 무결성 제약조건을 만족하게하기 위하여 TB_CITY_INFO를 초기화한 LIST에 있는 값들에 해당하는 영업소만 들어가도록 하였습니다.   
 
-csv 파일은 /src/main/resources/csv 경로에 있는 csv 파일들을 인식하도록 하였습니다.  
-<span style="color:gray;font-size:10pt;">csv 파일이 여러 개 있을 수 있다는 가정하에 코드를 작성하였습니다.</span>
+<br />
 
-csv 파일을 열어 2시간 이상 일정 농도 이상 진행되는 미세먼지 및 초미세먼지에 의한 등급을 console에 경보 또는 주의보가 지속되고 있는 시간과 영업소가 출력되도록 하였습니다.
+테이블이 모두 생성된 후 미세먼지와 초미세먼지 측정 데이터가 입력되어있는 CSV 파일을 열어 해당 파일에 있는 측정 데이터들을 가지고 작업을 시작합니다.   
+👉 CSV 파일은 /src/main/resources/csv 경로에 있는 csv 파일들을 인식하도록 하였습니다.  
+<span style="color:gray;font-size:10pt;">csv 파일이 여러 개 있을 수 있다는 가정하에 코드를 작성하였습니다.</span>   
+
+<br />
+
+<span style="color:red">**만약 DB에 중복되는 도시, 영업소, 일시가 있다면 중복처리되어 DB에 저장되지 않도록 하였습니다.**</span>   
+![Animation](https://github.com/jisuyoun/particulate/assets/122525676/9633668d-e344-4ab5-bf3e-134768c19dd3)   
+
+<br />
+
+CSV 파일에서 빈칸으로 되어있는 측정 데이터는 점검일로 가정하고 데이터를 0으로 변경하였으며, 점검일과 점검중인 측정기를 DB에 저장되도록 하였습니다.
+
+<br />
+
+CSV 파일을 열어 2시간 이상 일정 농도 이상 진행되는 미세먼지 및 초미세먼지에 의한 등급을 console에 경보 또는 주의보가 지속되고 있는 시간과 영업소가 출력되며, DB에 저장되도록 하였습니다.
 
 ![Animation](https://github.com/jisuyoun/particulate/assets/122525676/a8d9b592-41b5-491b-82f7-9e54125df66d)
 
+<br />
 
-<span style="color:red">**만약 DB에 중복되는 도시, 영업소, 일시가 있다면 중복처리되어 DB에 저장되지 않도록 하였습니다.**</span>
+CSV 파일을 열어 나온 모든 미세먼지와 초미세먼지 측정 데이터는 모두 DB에 저장되도록 하였습니다.
 
-![Animation](https://github.com/jisuyoun/particulate/assets/122525676/9633668d-e344-4ab5-bf3e-134768c19dd3)
-
+<br />
 
 실행이 된 후 console에 출력되었던 log들은 모두 **src/main/resources/logs/{실행날짜}** 경로에 **errorLog{실행날짜}.log**로 저장되도록 코드를 잘성하였습니다.   
 
-<br>   
+<br />   
 
 ## ✨ 주요 메소드   
 <details>
@@ -200,7 +241,7 @@ alertGrade(gradeList, csvList);
 </div>
 </details>
 
-<br>
+<br />
 
 ## ✍️개선할 점   
 - 웹훅을 적용하기 위해 시도해보았으나 실패했다.
@@ -212,3 +253,10 @@ alertGrade(gradeList, csvList);
 java.lang.IllegalArgumentException: Invalid character found in method name [0x160x030x030x010x920x010x000x010x8e0x030x030x880xb50x8b3a0xea!0xeaL}0xa50xfc0xbf`0xa00xda+0xc80x1b0xeb&? ]. HTTP method names must be tokens
 ```
 - 웹훅에 대한 공부를 더 하고 적용해보도록 해야겠다.   
+
+<br />
+
+## 📋 추후 추가 예정   
+- 웹으로 만들어 그래프로 측정 데이터들을 보여주면 좋을 것으로 생각된다.
+- 공공기관 API를 사용하여 데이터를 불러오는 것을 웹에 적용시키면 좋을 것으로 생각된다.
+- 공공기관 API를 사용하여 데이터를 불러오는 중 경보 또는 주의보 알림 단계가 되면 사용자에게 알림이 가는 웹훅을 넣으면 좋을 것으로 생각된다.
