@@ -6,6 +6,8 @@
 
 [사용 기술](#🛠️-사용-기술)   
 
+[디렉토리 구조](#🗂️-디렉토리-구조)
+
 [데이터 설계](#📊-데이터-설계)
 
 [진행 과정](#🔎-진행-과정)   
@@ -27,6 +29,54 @@
 
 <br />
 
+## 🗂️ 디렉토리 구조   
+📦src   
+ ┣ 📂main   
+ ┃ ┣ 📂java   
+ ┃ ┃ ┗ 📂com   
+ ┃ ┃ ┃ ┗ 📂exem   
+ ┃ ┃ ┃ ┃ ┗ 📂particulate   
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂controller   
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜ParticulateController.java   
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂mapper   
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜ParticulateMapper.java   
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂service   
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜ParticulateService.java   
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜ParticulateServiceImpl.java   
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜ParticulateApplication.java   
+ ┃ ┗ 📂resources   
+ ┃ ┃ ┣ 📂city   
+ ┃ ┃ ┃ ┗ 📜station_list.csv   
+ ┃ ┃ ┣ 📂csv   
+ ┃ ┃ ┃ ┗ 📜2023년3월_서울시_미세먼지.csv   
+ ┃ ┃ ┣ 📂logs   
+ ┃ ┃ ┣ 📂mapper   
+ ┃ ┃ ┃ ┗ 📜ParticulateMapper.xml   
+ ┃ ┃ ┣ 📂META-INF   
+ ┃ ┃ ┃ ┗ 📜additional-spring-configuration-metadata.json   
+ ┃ ┃ ┣ 📂static   
+ ┃ ┃ ┣ 📂templates   
+ ┃ ┃ ┣ 📜application.yml   
+ ┃ ┃ ┗ 📜logback-spring.xml   
+ ┗ 📂test   
+ ┃ ┣ 📂java   
+ ┃ ┗ 📂resources   
+ ┃ ┃ ┣ 📂city   
+ ┃ ┃ ┃ ┗ 📜station_list.csv   
+ ┃ ┃ ┣ 📂csv   
+ ┃ ┃ ┃ ┗ 📜2023년3월_서울시_미세먼지.csv   
+ ┃ ┃ ┣ 📂logs      
+ ┃ ┃ ┣ 📂mapper   
+ ┃ ┃ ┃ ┗ 📜ParticulateMapper.xml   
+ ┃ ┃ ┣ 📂META-INF   
+ ┃ ┃ ┃ ┗ 📜additional-spring-configuration-metadata.json   
+ ┃ ┃ ┣ 📂static   
+ ┃ ┃ ┣ 📂templates   
+ ┃ ┃ ┣ 📜application.yml   
+ ┃ ┃ ┗ 📜logback-spring.xml      
+
+ <br />
+
 ## 📊 데이터 설계   
 스키마명은 **particulate** 입니다.
 
@@ -41,12 +91,12 @@
 <br />
 
 ## 🔎 진행 과정   
-스프링부트를 실행시켰을 때 particulate 스키마만 만들어둔 후 필요한 테이블을 모두 CREATE하여  
+particulate 스키마만 만들어둔 후 스프링부트를 실행시켰을 때  필요한 테이블을 모두 CREATE 되도록 하였습니다.   
 TB_CITY_INFO에 필요한 지역들을 LIST에 넣은 후 정보를 테이블에 넣어주었고,   
-TB_STATION_INFO에 넣을 영업소들은 영업소 정보가 담긴 CSV 파일을 열어 해당 값들을 넣어주도록 하였습니다.   
+TB_STATION_INFO에 넣을 영업소들은 영업소 정보가 담긴 CSV 파일(station_list.csv)을 열어 해당 값들을 넣어주도록 하였습니다.   
 👉 TB_CITY_INFO에 필요한 지역들 중 서울만 넣었습니다.    
 <span style="color:gray;font-size:10pt;">서울시 데이터만 다루는 것이기 때문에 다른 지역은 넣지 않았습니다.</span>  
-👉 TB_STATION_INFO는 무결성 제약조건을 만족하게하기 위하여 TB_CITY_INFO를 초기화한 LIST에 있는 값들에 해당하는 영업소만 들어가도록 하였습니다.   
+👉 TB_STATION_INFO는 무결성 제약조건을 만족하게 하기 위하여 TB_CITY_INFO를 초기화한 LIST에 있는 값들에 해당하는 영업소만 들어가도록 하였습니다.   
 
 <br />
 
@@ -61,17 +111,22 @@ TB_STATION_INFO에 넣을 영업소들은 영업소 정보가 담긴 CSV 파일�
 
 <br />
 
-CSV 파일에서 빈칸으로 되어있는 측정 데이터는 점검일로 가정하고 데이터를 0으로 변경하였으며, 점검일과 점검중인 측정기를 DB에 저장되도록 하였습니다.
+CSV 파일에서 빈칸으로 되어있는 측정 데이터는 점검일로 가정하고 데이터를 0으로 변경하였으며, 점검일과 점검중인 측정기를 DB에 저장되도록 하였습니다.   
+
+![image](https://github.com/jisuyoun/particulate/assets/122525676/864572a0-1aac-4c9a-856d-69be028602ca)
 
 <br />
 
 CSV 파일을 열어 2시간 이상 일정 농도 이상 진행되는 미세먼지 및 초미세먼지에 의한 등급을 console에 경보 또는 주의보가 지속되고 있는 시간과 영업소가 출력되며, DB에 저장되도록 하였습니다.
 
-![Animation](https://github.com/jisuyoun/particulate/assets/122525676/a8d9b592-41b5-491b-82f7-9e54125df66d)
+![Animation](https://github.com/jisuyoun/particulate/assets/122525676/a8d9b592-41b5-491b-82f7-9e54125df66d)   
+
+![image](https://github.com/jisuyoun/particulate/assets/122525676/650e4f37-024f-4030-96da-69fd1a729b00)   
 
 <br />
 
-CSV 파일을 열어 나온 모든 미세먼지와 초미세먼지 측정 데이터는 모두 DB에 저장되도록 하였습니다.
+CSV 파일을 열어 나온 모든 미세먼지와 초미세먼지 측정 데이터는 모두 DB에 저장되도록 하였습니다.   
+![image](https://github.com/jisuyoun/particulate/assets/122525676/b7129b18-cb1d-4896-929f-d2e2025c4ef5)
 
 <br />
 
@@ -85,54 +140,64 @@ CSV 파일을 열어 나온 모든 미세먼지와 초미세먼지 측정 데이
 <div markdown="1">
 
 ```java 
-if (modifiableList.get(3).isEmpty()) {
-    // 측정 농도 중 미세먼지 측정값만 없을 경우 미세먼지 측정기 점검 날로 가정한다.
-    modifiableList.set(3, "0");
+    List<String> modifiableList = new ArrayList<>(csvList);
 
-    inspectionType = "part";
-
-}
-
-if (modifiableList.size() < 5 || modifiableList.get(4).isEmpty()) {
-    // 측정 농도 중 초미세먼지 측정값만 없을 경우 초미세먼지 측정기 점검 날로 가정한다.
-    inspectionType = "fine";
-
-    if (modifiableList.size() < 5) {
+    if (modifiableList.size() == 4) {
+        // 측정 농도가 없을 경우에는 점검 날로 가정한다.
+        modifiableList.add("0");
         modifiableList.add("0");
 
+        inspectionType = "dual";
+
     } else {
-        modifiableList.set(4, "0");
+        if (modifiableList.get(4).isEmpty()) {
+            // 측정 농도 중 미세먼지 측정값만 없을 경우 미세먼지 측정기 점검 날로 가정한다.
+            modifiableList.set(4, "0");
 
+            inspectionType = "part";
+
+        }
+
+        if (modifiableList.size() < 6 || modifiableList.get(4).isEmpty()) {
+            // 측정 농도 중 초미세먼지 측정값만 없을 경우 초미세먼지 측정기 점검 날로 가정한다.
+            inspectionType = "fine";
+
+            if (modifiableList.size() < 6) {
+                modifiableList.add("0");
+
+            } else {
+                modifiableList.set(5, "0");
+            }
+        }
     }
-}
 
-csvList = modifiableList; // 점검일에 0을 넣은 리스트로 변경
+    csvList = modifiableList; // 점검일에 0을 넣은 리스트로 변경
 ```
 - csv 파일에서 농도 부분이 모두 빈칸일 경우 modifiableList의 사이즈는 3이 되므로, 0 값을 두 개 추가하였습니다.   
 - csv 파일에서 미세먼지 농도만 빈칸일 경우 미세먼지가 들어가는 인덱스인 3에 0 값을 넣도록 하였습니다.   
 - csv 파일에서 초미세먼지 농도만 빈칸일 경우 0 값이 추가되도록 하였습니다.   
 
 ```java
-if (!"".equals(inspectionType)) {
-    // 점검 정보를 insert
-    switch (inspectionType) {
-        case "dual": 
-            inspectionType = "모든 측정기";
-            break;
+    if (!"".equals(inspectionType)) {
+        // 점검 정보를 insert
+        switch (inspectionType) {
+            case "dual":
+                inspectionType = "모든 측정기";
+                break;
 
-        case "part":
-            inspectionType = "미세먼지 측정기";
-            break;
-        
-        default:
-            inspectionType = "초미세먼지 측정기";
-            break;
+            case "part":
+                inspectionType = "미세먼지 측정기";
+                break;
+
+            default:
+                inspectionType = "초미세먼지 측정기";
+                break;
+        }
+
+        modifiableList.add(inspectionType);
+
+        partMapper.insertInspection(modifiableList);
     }
-
-    modifiableList.add(inspectionType);
-
-    partMapper.insertInspection(modifiableList);
-}
 ```
 - 위 메소드를 통해 나타난 점검 여부를 가지고 TB_INSPECTION_INFO 테이블에 정보를 insert 합니다.   
 </div>
@@ -143,51 +208,55 @@ if (!"".equals(inspectionType)) {
 <div markdown="1">
 
 ```java
-int partValue = Integer.parseInt(csvList.get(3));
+    int partValue = Integer.parseInt(csvList.get(4));
 
-if (partValue >= 300) {
-    // 미세먼지 경보일 경우, 주의보는 cnt 0으로 바꿔준다.
-    grade2Cnt++;
-    grade4Cnt = 0;
-} else if (partValue < 300 && partValue >= 150) {
-    // 미세먼지 주의보일 경우
-    grade2Cnt = 0;
-    grade4Cnt++;
-} else {
-    // 미세먼지 경보도 주의보도 아닐 경우
-    grade2Cnt = 0;
-    grade4Cnt = 0;
-}
+    if (partValue >= 300) {
+        // 미세먼지 경보일 경우, 주의보는 cnt 0으로 바꿔준다.
+        grade2Cnt++;
+        grade4Cnt = 0;
+    } else if (partValue < 300 && partValue >= 150) {
+        // 미세먼지 주의보일 경우
+        grade2Cnt = 0;
+        grade4Cnt++;
+    } else {
+        // 미세먼지 경보도 주의보도 아닐 경우
+        grade2Cnt = 0;
+        grade4Cnt = 0;
+    }
 
-int fineValue = Integer.parseInt(csvList.get(4));
+    int fineValue = Integer.parseInt(csvList.get(5));
 
-if (fineValue >= 150) {
-    // 초미세먼지 경보일 경우, 주의보는 cnt 0으로 만들어준다.
-    grade1Cnt++;
-    grade3Cnt = 0;
-} else if (fineValue < 150 && fineValue >= 75) {
-    // 초미세먼지 주의보일 경우
-    grade1Cnt = 0;
-    grade3Cnt++;
-} else {
-    // 초미세먼지 경보도 주의보도 아닐 경우
-    grade1Cnt = 0;
-    grade3Cnt = 0;
-}
+    if (fineValue >= 150) {
+        // 초미세먼지 경보일 경우, 주의보는 cnt 0으로 만들어준다.
+        grade1Cnt++;
+        grade3Cnt = 0;
+    } else if (fineValue < 150 && fineValue >= 75) {
+        // 초미세먼지 주의보일 경우
+        grade1Cnt = 0;
+        grade3Cnt++;
+    } else {
+        // 초미세먼지 경보도 주의보도 아닐 경우
+        grade1Cnt = 0;
+        grade3Cnt = 0;
+    }
+    if (grade1Cnt >= 2 || grade2Cnt >= 2 
+        || grade3Cnt >= 2 || grade4Cnt >= 2) {
 
-gradeList.add(grade1Cnt);
-gradeList.add(grade2Cnt);
-gradeList.add(grade3Cnt);
-gradeList.add(grade4Cnt);
+            List<Integer> gradeList = new ArrayList<>();
+            gradeList.add(grade1Cnt);
+            gradeList.add(grade2Cnt);
+            gradeList.add(grade3Cnt);
+            gradeList.add(grade4Cnt);
 
-// 미세먼지의 등급을 알아본다.
-alertGrade(gradeList, csvList);
+            // 미세먼지의 등급을 알아본다.
+            alertGrade(gradeList, csvList);
+    }
 ```
 - 일정 농도 이상의 미세먼지 및 초미세먼지가 되었을 경우 각 등급의 카운트를 올려줍니다.   
 
 ```java 
     private List<String> alertGrade(List<Integer> gradeList, List<String> csvList) {
-                
+
         String grade = "";
 
         int grade1Cnt = gradeList.get(0);
@@ -208,18 +277,23 @@ alertGrade(gradeList, csvList);
         }
 
         if (grade != "") {
-
-            log.info(csvList.get(0) + "시 " + csvList.get(1) + " 영업소는 현재 대기 등급 " + grade + " 입니다.");
+            log.info("[정보] {}시 {} {}시 현재 대기 등급 {} 입니다.", new Object[] {
+                csvList.get(0),
+                csvList.get(2),
+                csvList.get(1),
+                grade
+            });
 
             try {
-                
+
                 csvList.add(grade); // 리스트에 등급을 추가로 넣어준다.
 
                 // 미세먼지 등급을 기록한다.
                 partMapper.insertAlertInfo(csvList);
 
             } catch (Exception e) {
-                log.error("에러 => 미세먼지 경보 중 에러 발생 " + e);
+                log.error("[에러] 미세먼지 경보 중 에러 발생 => " + csvList);
+                log.error("[에러] 내용 => " + e);
                 e.printStackTrace();
             }
         }

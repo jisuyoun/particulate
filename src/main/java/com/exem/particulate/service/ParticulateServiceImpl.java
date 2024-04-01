@@ -31,14 +31,16 @@ public class ParticulateServiceImpl implements ParticulateService {
 
     /*
      * 처음 실행시키는 것인지 확인 후 테이블 생성
+     * @ throws Exception
      */
     @Override
     public void checkTable() throws Exception {
 
+    try {
         int tableYN = partMapper.checkTable();
 
         if (tableYN == 0) {
-            try {
+            
                 // 지역 테이블 만들기
                 partMapper.createCityTable();
                 
@@ -87,18 +89,19 @@ public class ParticulateServiceImpl implements ParticulateService {
                         }
                     }
                 }
-            } catch (Exception e) {
-                log.error("지역과 측정소 정보를 insert 중 에러 발생");
-                e.printStackTrace();
             }
+        } catch (Exception e) {
+            log.error("[에러] 지역과 측정소 정보를 insert 중 에러 발생 => " + e);
+            e.printStackTrace();
         }
     }
 
     /*
      * 측정농도를 DB에 저장
+     * @ throws Exception
      */
     @Override
-    public void particulate() {
+    public void particulate() throws Exception {
 
         try {
             log.info("======= particulate 시작 ======");
@@ -151,7 +154,11 @@ public class ParticulateServiceImpl implements ParticulateService {
                             boolean partFlag = duplPartInfo(csvList);
 
                             if (partFlag) {
-                                log.info(csvList.get(1) + "시 " + csvList.get(0) + " " + csvList.get(2) + " 데이터는 중복입니다.");
+                                log.info("[정보] {}시 {} {}시 데이터는 중복입니다.", new Object[] {
+                                    csvList.get(0),
+                                    csvList.get(2),
+                                    csvList.get(1)
+                                });
                                 continue;
                             }
 
@@ -213,8 +220,9 @@ public class ParticulateServiceImpl implements ParticulateService {
                                         partMapper.insertInspection(modifiableList);
                                     }
                                 } catch (Exception e) {
-                                    log.error("에러 발생구간 => " + modifiableList);
-                                    log.error("에러 => 점검일 DB 등록 중 에러 발생" + e);
+                                    log.error("[에러] 점검일 DB 등록 중 에러 발생 => " + modifiableList);
+                                    log.error("[에러] 내용 => " + e);
+                                    e.printStackTrace();
                                 }
 
                                 int partValue = Integer.parseInt(csvList.get(4));
@@ -248,19 +256,25 @@ public class ParticulateServiceImpl implements ParticulateService {
                                     grade1Cnt = 0;
                                     grade3Cnt = 0;
                                 }
+                                if (grade1Cnt >= 2 || grade2Cnt >= 2 
+                                    || grade3Cnt >= 2 || grade4Cnt >= 2) {
 
-                                List<Integer> gradeList = new ArrayList<>();
-                                gradeList.add(grade1Cnt);
-                                gradeList.add(grade2Cnt);
-                                gradeList.add(grade3Cnt);
-                                gradeList.add(grade4Cnt);
-
-                                // 미세먼지의 등급을 알아본다.
-                                alertGrade(gradeList, csvList);
+                                        List<Integer> gradeList = new ArrayList<>();
+                                        gradeList.add(grade1Cnt);
+                                        gradeList.add(grade2Cnt);
+                                        gradeList.add(grade3Cnt);
+                                        gradeList.add(grade4Cnt);
+        
+                                        // 미세먼지의 등급을 알아본다.
+                                        alertGrade(gradeList, csvList);
+                                }
+                                
+                                // 각 측정소 별 미세먼지와 초미세먼지 농도를 삽입한다.
+                                partMapper.insertPartInfo(csvList);
 
                             } catch (Exception e) {
-                                log.error("에러 발생구간 => " + csvList);
-                                log.error("에러 => 측정소별 농도 넣는 중 에러 발생 " + e);
+                                log.error("[에러] 측정소별 농도 넣는 중 에러 발생 => " + csvList);
+                                log.error("[에러] 내용 => " + e);
                                 e.printStackTrace();
                             }
                         }
@@ -269,22 +283,29 @@ public class ParticulateServiceImpl implements ParticulateService {
                 }
             }
         } catch (IOException e) {
-            log.error("에러 => csv 파일 찾는 중 에러 발생 " + e);
+            log.error("[에러] csv 파일 찾는 중 에러 발생 => " + e);
             e.printStackTrace();
+        } finally {
+            log.info("========== ParticulateServiceImpl 끝 ==========");
         }
     }
 
     // 측정데이터를 넣기 전 중복 체크, 중복체크는 시, 영업소, 날짜를 기준으로 중복 체크를 진행한다.
     private boolean duplPartInfo(List<String> csvList) {
 
-        int duplChk = partMapper.duplPartInfo(csvList);
-
         boolean result = false;
 
-        if (duplChk != 0) {
-            result = true;
-        }
+        try {
+            int duplChk = partMapper.duplPartInfo(csvList);
 
+            if (duplChk != 0) {
+                result = true;
+            }
+        } catch (Exception e) {
+            log.error("[에러] 중복 검사 중 에러 발생 =>  " + csvList);
+            log.error("[에러] 내용 => " + e);
+            e.printStackTrace();
+        }
         return result;
     }
 
@@ -311,8 +332,12 @@ public class ParticulateServiceImpl implements ParticulateService {
         }
 
         if (grade != "") {
-
-            log.info(csvList.get(0) + "시 " + csvList.get(2) + " 영업소는 현재 대기 등급 " + grade + " 입니다.");
+            log.info("[정보] {}시 {} {}시 현재 대기 등급 {} 입니다.", new Object[] {
+                csvList.get(0),
+                csvList.get(2),
+                csvList.get(1),
+                grade
+            });
 
             try {
 
@@ -322,7 +347,8 @@ public class ParticulateServiceImpl implements ParticulateService {
                 partMapper.insertAlertInfo(csvList);
 
             } catch (Exception e) {
-                log.error("에러 => 미세먼지 경보 중 에러 발생 " + e);
+                log.error("[에러] 미세먼지 경보 중 에러 발생 => " + csvList);
+                log.error("[에러] 내용 => " + e);
                 e.printStackTrace();
             }
         }

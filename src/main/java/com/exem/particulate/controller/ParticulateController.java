@@ -4,10 +4,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 
-import com.exem.particulate.service.ParticulateService;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import com.exem.particulate.service.ParticulateService;
 
 
 @Controller
@@ -21,13 +21,14 @@ public class ParticulateController {
     /*
      * 측정농도를 DB에 저장
      */
-    @PostMapping("/insertParticulate")
-    public void particulate() {
+    @PostMapping("/execute")
+    public void execute() {
 
         try {
             // 처음 실행시키는 것인지 확인
             partService.checkTable();
 
+            // DB 저장 시작
             partService.particulate();
         } catch (Exception e) {
             log.error("Controller 오류 발생 " + e);

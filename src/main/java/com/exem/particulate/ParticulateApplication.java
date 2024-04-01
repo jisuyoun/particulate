@@ -16,7 +16,7 @@ public class ParticulateApplication {
 
         // csv를 읽고, 데이터 처리 메소드 실행
         ParticulateController particulateController = context.getBean(ParticulateController.class);
-        particulateController.particulate();
+        particulateController.execute();
 	}
 
 }

@@ -7,7 +7,6 @@
 		SELECT COUNT(TABLE_NAME)
 		FROM INFORMATION_SCHEMA.TABLES
 		WHERE TABLE_SCHEMA = 'particulate'
-			AND TABLE_NAME='TB_CITY_INFO'
 	</select>
 
 	<!-- 지역 테이블 생성 -->
