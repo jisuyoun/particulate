@@ -95,7 +95,7 @@ CREATE SCHEMA IF NOT EXISTS `exemtest` DEFAULT CHARACTER SET utf8mb3 ;
 
 ### 2. 측정 데이터 관련   
 ❗만약 DB에 중복되는 도시, 영업소, 일시가 있다면 중복처리되어 DB에 저장되지 않도록 하였습니다. 
-    ![Animation](https://github.com/jisuyoun/particulate/assets/122525676/9633668d-e344-4ab5-bf3e-134768c19dd3)   
+    ![Animation](https://github.com/jisuyoun/particulate/assets/122525676/90dff673-a6b0-4fc3-9560-a56678b68c9f)
 
 - 미세먼지와 초미세먼지 측정 데이터가 입력되어있는 CSV 파일(2023년3월_서울시_미세먼지.csv)을 열어 해당 파일에 있는 측정 데이터들을 가지고 작업을 시작합니다.
     - CSV 파일은 /src/main/resources/csv 경로에 있는 csv 파일들을 인식하도록 하였습니다.
@@ -105,7 +105,7 @@ CREATE SCHEMA IF NOT EXISTS `exemtest` DEFAULT CHARACTER SET utf8mb3 ;
     ![image](https://github.com/jisuyoun/particulate/assets/122525676/ebce7346-2552-44b8-a07a-d09f17c4f9a8) 
 
 - **[요구사항] CSV 파일을 열어 2시간 이상 일정 농도 이상 진행되는 미세먼지 및 초미세먼지에 의한 등급을 console에 경보 또는 주의보가 지속되고 있는 시간과 영업소가 출력되며, DB에 저장되도록 하였습니다.**
-     ![Animation](https://github.com/jisuyoun/particulate/assets/122525676/a8d9b592-41b5-491b-82f7-9e54125df66d)   
+     ![Animation](https://github.com/jisuyoun/particulate/assets/122525676/171cd39f-e1e3-426c-85f3-eabbd154c12e)    
 
     ![image](https://github.com/jisuyoun/particulate/assets/122525676/7b2580b7-1371-49a5-a6a8-48192d39a714) 
 
