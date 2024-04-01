@@ -59,9 +59,10 @@ public class ParticulateServiceImpl implements ParticulateService {
                 List<String> cityList = new ArrayList<>();
                 cityList.add("서울");
 
-                // 시에 대한 정보를 넣어준다.
+                // 지역에 대한 정보를 넣어준다.
                 partMapper.insertCityInfo(cityList);
 
+                // =========== 영업소에 대한 정보 insert start =========== //
                 Path dir = Paths.get("src\\main\\resources\\city");
 
                 try (DirectoryStream<Path> csvFile = Files.newDirectoryStream(dir, "*.csv")) {
@@ -75,7 +76,7 @@ public class ParticulateServiceImpl implements ParticulateService {
                             String line;
 
                             while ((line = br.readLine()) != null) {
-                                // 영업소에 대한 정보를 넣어준다.
+                                
                                 String[] array = line.split(",");
 
                                 List<String> csvList = new ArrayList<>(Arrays.asList(array));
@@ -89,6 +90,7 @@ public class ParticulateServiceImpl implements ParticulateService {
                         }
                     }
                 }
+                // =========== 영업소에 대한 정보 insert end =========== //
             }
         } catch (Exception e) {
             log.error("[에러] 지역과 측정소 정보를 insert 중 에러 발생 => " + e);
@@ -162,7 +164,8 @@ public class ParticulateServiceImpl implements ParticulateService {
                                 continue;
                             }
 
-                            String inspectionType = ""; // 측정기 점검 여부
+                            // ============= 측정기 점검일 start ============= //
+                            String inspectionType = ""; 
 
                             try {
                                 List<String> modifiableList = new ArrayList<>(csvList);
@@ -224,7 +227,9 @@ public class ParticulateServiceImpl implements ParticulateService {
                                     log.error("[에러] 내용 => " + e);
                                     e.printStackTrace();
                                 }
+                                // ============= 측정기 점검일 end ============= //
 
+                                // ============= 미세먼지 경보 및 주의보 start ============= //
                                 int partValue = Integer.parseInt(csvList.get(4));
 
                                 if (partValue >= 300) {
@@ -268,6 +273,7 @@ public class ParticulateServiceImpl implements ParticulateService {
                                         // 미세먼지의 등급을 알아본다.
                                         alertGrade(gradeList, csvList);
                                 }
+                                // ============= 미세먼지 경보 및 주의보 end ============= //
                                 
                                 // 각 측정소 별 미세먼지와 초미세먼지 농도를 삽입한다.
                                 partMapper.insertPartInfo(csvList);
