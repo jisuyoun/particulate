@@ -47,6 +47,6 @@ public interface ParticulateMapper {
     void insertPartInfo(List<String> csvList);
 
     // ======= 테스트 ========= //
-    Map<String, Object> selectPartInfoList(String regDt);
+    int insertPartInfoTest(List<String> csvList);
 
 }

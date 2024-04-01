@@ -2,15 +2,15 @@ package com.exem.particulate.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.exem.particulate.service.ParticulateService;
 
 
-@Controller
+@RestController 
 @RequiredArgsConstructor
 public class ParticulateController {
     
