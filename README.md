@@ -24,7 +24,8 @@
 ## 🛠️ 사용 기술   
 - Java 17
 - SpringBoot 3.1.10
-- MySQL
+- Gradle
+- Mysql
 - vscode   
 
 <br />
@@ -60,25 +61,14 @@
  ┃ ┃ ┗ 📜logback-spring.xml   
  ┗ 📂test   
  ┃ ┣ 📂java   
- ┃ ┗ 📂resources   
- ┃ ┃ ┣ 📂city   
- ┃ ┃ ┃ ┗ 📜station_list.csv   
- ┃ ┃ ┣ 📂csv   
- ┃ ┃ ┃ ┗ 📜2023년3월_서울시_미세먼지.csv   
- ┃ ┃ ┣ 📂logs      
- ┃ ┃ ┣ 📂mapper   
- ┃ ┃ ┃ ┗ 📜ParticulateMapper.xml   
- ┃ ┃ ┣ 📂META-INF   
- ┃ ┃ ┃ ┗ 📜additional-spring-configuration-metadata.json   
- ┃ ┃ ┣ 📂static   
- ┃ ┃ ┣ 📂templates   
- ┃ ┃ ┣ 📜application.yml   
- ┃ ┃ ┗ 📜logback-spring.xml      
+ ┃ ┃ ┗ 📜ParticulateApplicationTests.java       
 
  <br />
 
 ## 📊 데이터 설계   
-스키마명은 **particulate** 입니다.
+스키마명은 **particulate** 입니다.   
+
+CREATE SCHEMA IF NOT EXISTS `exemtest` DEFAULT CHARACTER SET utf8mb3 ;
 
 ![image](https://github.com/jisuyoun/particulate/assets/122525676/37eb8bf1-4889-4913-ba00-dee9a0d907a8)
 
@@ -91,48 +81,43 @@
 <br />
 
 ## 🔎 진행 과정   
-particulate 스키마만 만들어둔 후 스프링부트를 실행시켰을 때  필요한 테이블을 모두 CREATE 되도록 하였습니다.   
-TB_CITY_INFO에 필요한 지역들을 LIST에 넣은 후 정보를 테이블에 넣어주었고,   
-TB_STATION_INFO에 넣을 영업소들은 영업소 정보가 담긴 CSV 파일(station_list.csv)을 열어 해당 값들을 넣어주도록 하였습니다.   
-👉 TB_CITY_INFO에 필요한 지역들 중 서울만 넣었습니다.    
-<span style="color:gray;font-size:10pt;">서울시 데이터만 다루는 것이기 때문에 다른 지역은 넣지 않았습니다.</span>  
-👉 TB_STATION_INFO는 무결성 제약조건을 만족하게 하기 위하여 TB_CITY_INFO를 초기화한 LIST에 있는 값들에 해당하는 영업소만 들어가도록 하였습니다.   
+### 1. 테이블 관련
+- MySQL에 particulate 스키마만 만들어둔 후 스프링부트를 실행시켰을 때 필요한 테이블을 모두 CREATE 되도록 하였습니다.   
+    - 처음 실행시 테이블이 존재하는지를 SELECT한 후 존재하는 테이블이 없을 경우에만 CREATE가 진행됩니다.
+
+- TB_CITY_INFO에 필요한 지역들을 LIST에 넣으면 해당 지역을 테이블에 INSERT 되도록 하였습니다.    
+    - 서울시 데이터만 다루는 것이기 때문에 서울을 제외한 다른 지역은 넣지 않았습니다.
+
+- TB_STATION_INFO는 영업소 정보가 담긴 CSV 파일(station_list.csv)을 열어 해당 값들을 넣어주도록 하였습니다.  
+    - TB_STATION_INFO는 무결성 제약조건을 만족하게 하기 위하여 TB_CITY_INFO에 INSERT된 지역에 있는 영업소만 들어가도록 하였습니다. 
 
 <br />
 
-테이블이 모두 생성된 후 미세먼지와 초미세먼지 측정 데이터가 입력되어있는 CSV 파일을 열어 해당 파일에 있는 측정 데이터들을 가지고 작업을 시작합니다.   
-👉 CSV 파일은 /src/main/resources/csv 경로에 있는 csv 파일들을 인식하도록 하였습니다.  
-<span style="color:gray;font-size:10pt;">csv 파일이 여러 개 있을 수 있다는 가정하에 코드를 작성하였습니다.</span>   
+### 2. 측정 데이터 관련   
+❗만약 DB에 중복되는 도시, 영업소, 일시가 있다면 중복처리되어 DB에 저장되지 않도록 하였습니다. 
+    ![Animation](https://github.com/jisuyoun/particulate/assets/122525676/9633668d-e344-4ab5-bf3e-134768c19dd3)   
+
+- 미세먼지와 초미세먼지 측정 데이터가 입력되어있는 CSV 파일(2023년3월_서울시_미세먼지.csv)을 열어 해당 파일에 있는 측정 데이터들을 가지고 작업을 시작합니다.
+    - CSV 파일은 /src/main/resources/csv 경로에 있는 csv 파일들을 인식하도록 하였습니다.
+    - CSV 파일이 여러 개 있을 수 있다는 가정하에 코드를 작성하였습니다.
+
+- **[요구사항]CSV 파일에서 빈칸으로 되어있을 경우 해당 측정일은 점검일로 가정하고 농도 데이터를 0으로 변경하였으며, 점검일과 점검중인 측정기를 DB에 저장되도록 하였습니다.**   
+    ![image](https://github.com/jisuyoun/particulate/assets/122525676/ebce7346-2552-44b8-a07a-d09f17c4f9a8) 
+
+- **[요구사항] CSV 파일을 열어 2시간 이상 일정 농도 이상 진행되는 미세먼지 및 초미세먼지에 의한 등급을 console에 경보 또는 주의보가 지속되고 있는 시간과 영업소가 출력되며, DB에 저장되도록 하였습니다.**
+     ![Animation](https://github.com/jisuyoun/particulate/assets/122525676/a8d9b592-41b5-491b-82f7-9e54125df66d)   
+
+    ![image](https://github.com/jisuyoun/particulate/assets/122525676/7b2580b7-1371-49a5-a6a8-48192d39a714) 
+
+- CSV 파일 내 모든 미세먼지와 초미세먼지 측정 데이터는 DB에 저장되도록 하였습니다.   
+    ![image](https://github.com/jisuyoun/particulate/assets/122525676/2f17c49d-0ff7-4398-b657-c17d73934072)
 
 <br />
 
-<span style="color:red">**만약 DB에 중복되는 도시, 영업소, 일시가 있다면 중복처리되어 DB에 저장되지 않도록 하였습니다.**</span>   
-![Animation](https://github.com/jisuyoun/particulate/assets/122525676/9633668d-e344-4ab5-bf3e-134768c19dd3)   
+### 3. 기타   
+- 실행이 된 후 console에 출력되었던 log들은 모두 **src/main/resources/logs/{실행날짜}** 경로에 **errorLog{실행날짜}.log**로 저장되도록 코드를 작성성하였습니다. 
 
 <br />
-
-CSV 파일에서 빈칸으로 되어있는 측정 데이터는 점검일로 가정하고 데이터를 0으로 변경하였으며, 점검일과 점검중인 측정기를 DB에 저장되도록 하였습니다.   
-
-![image](https://github.com/jisuyoun/particulate/assets/122525676/864572a0-1aac-4c9a-856d-69be028602ca)
-
-<br />
-
-CSV 파일을 열어 2시간 이상 일정 농도 이상 진행되는 미세먼지 및 초미세먼지에 의한 등급을 console에 경보 또는 주의보가 지속되고 있는 시간과 영업소가 출력되며, DB에 저장되도록 하였습니다.
-
-![Animation](https://github.com/jisuyoun/particulate/assets/122525676/a8d9b592-41b5-491b-82f7-9e54125df66d)   
-
-![image](https://github.com/jisuyoun/particulate/assets/122525676/650e4f37-024f-4030-96da-69fd1a729b00)   
-
-<br />
-
-CSV 파일을 열어 나온 모든 미세먼지와 초미세먼지 측정 데이터는 모두 DB에 저장되도록 하였습니다.   
-![image](https://github.com/jisuyoun/particulate/assets/122525676/b7129b18-cb1d-4896-929f-d2e2025c4ef5)
-
-<br />
-
-실행이 된 후 console에 출력되었던 log들은 모두 **src/main/resources/logs/{실행날짜}** 경로에 **errorLog{실행날짜}.log**로 저장되도록 코드를 잘성하였습니다.   
-
-<br />   
 
 ## ✨ 주요 메소드   
 <details>

@@ -1,13 +1,10 @@
 package com.exem.particulate.mapper;
 
 import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.mybatis.spring.annotation.MapperScan;
 
 @Mapper
-@MapperScan
 public interface ParticulateMapper {
 
     // 처음 실행시키는 것인지 확인
@@ -45,8 +42,5 @@ public interface ParticulateMapper {
 
     // 영업소별 미세먼지 농도 삽입
     void insertPartInfo(List<String> csvList);
-
-    // ======= 테스트 ========= //
-    int insertPartInfoTest(List<String> csvList);
 
 }

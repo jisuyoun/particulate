@@ -138,9 +138,4 @@
 		VALUES(#{csvList[0]}, #{csvList[2]}, #{csvList[6]}, #{csvList[1]})
 	</insert>
 
-	<!-- test -->
-	<insert id="insertPartInfo" parameterType="java.util.HashMap" resultType="Int">
-	    INSERT INTO TB_PARTICULATE_INFO (city, station, particulate, fineParticulate, regDt) 
-		VALUES(#{csvList[0]}, #{csvList[2]}, #{csvList[4]}, #{csvList[5]}, #{csvList[1]})
-	</insert>
 </mapper>
