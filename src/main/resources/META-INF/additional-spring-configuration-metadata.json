@@ -3,5 +3,10 @@
     "name": "type-aliases-package",
     "type": "java.lang.String",
     "description": "A description for 'type-aliases-package'"
+  },
+  {
+    "name": "webhook.url",
+    "type": "java.lang.String",
+    "description": "A description for 'webhook.url'"
   }
 ]}

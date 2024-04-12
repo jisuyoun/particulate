@@ -12,6 +12,8 @@ server:
       init-parameters:
         development: true
 
+webhook:
+  url: http://localhost:8080/webhook
 
 mybatis:
   mapper-locations: classpath:mapper/**/*.xml

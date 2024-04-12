@@ -9,7 +9,7 @@
     </appender>
     
     <!-- 파일 저장 --> 
-    <property name="LOG_PATH" value="src\\main\\resources\\logs"/>
+    <property name="LOG_PATH" value="particulate\\src\\main\\resources\\logs"/>
     <property name="LOG_FILE_NAME" value="errorLog"/>
     <property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [traceId=%X{traceId}] [%thread] [%logger{40}] - %msg%n"/>
 

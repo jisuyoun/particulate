@@ -99,9 +99,9 @@
 
 	<!-- cityList를 사용하여 동적으로 쿼리를 생성 -->
 	<insert id="insertCityInfo" parameterType="java.util.List">
-		<foreach collection="cityList" item="city" separator=";">
-			INSERT INTO TB_CITY_INFO (city)
-			VALUES(#{city})
+		INSERT INTO TB_CITY_INFO (city) VALUES 
+		<foreach collection="cityList" item="city" separator="),(" open="(" close=")">
+			#{city}
 		</foreach>
 	</insert>
 
@@ -118,12 +118,12 @@
 	</insert>
 
 	<!-- 영업소별 미세먼지 농도 전 체크 -->
-	<select id="duplPartInfo" parameterType="java.util.HashMap" resultType="Int">
+	<select id="duplPartInfo" parameterType="com.exem.particulate.model.PartInfo" resultType="Int">
 		SELECT COUNT(*)
 		FROM TB_PARTICULATE_INFO
-		WHERE city=#{csvList[0]}
-			AND station=#{csvList[2]}
-			AND regDt=#{csvList[1]}
+		WHERE city=#{city}
+			AND station=#{station}
+			AND regDt=#{regDt}
 	</select>
 
 	<!-- 점검일 삽입 -->

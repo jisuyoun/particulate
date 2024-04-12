@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.exem.particulate.model.PartInfo;
+
 @Mapper
 public interface ParticulateMapper {
 
@@ -38,7 +40,7 @@ public interface ParticulateMapper {
     void insertAlertInfo(List<String> csvList);
 
     // 미세먼지 농도 삽입 전 중복 체크
-    int duplPartInfo(List<String> csvList);
+    int duplPartInfo(PartInfo particulateDTO);
 
     // 영업소별 미세먼지 농도 삽입
     void insertPartInfo(List<String> csvList);

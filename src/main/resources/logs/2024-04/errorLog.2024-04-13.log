@@ -1,0 +1,20 @@
+2024-04-13 00:24:12.325 INFO  [traceId=] [main] [c.e.particulate.ParticulateApplication] - Starting ParticulateApplication using Java 17.0.10 with PID 2532 (C:\vscodeWorkspace\test\particulate\build\classes\java\main started by jisuy in C:\vscodeWorkspace\test)
+2024-04-13 00:24:12.333 INFO  [traceId=] [main] [c.e.particulate.ParticulateApplication] - No active profile set, falling back to 1 default profile: "default"
+2024-04-13 00:24:13.703 INFO  [traceId=] [main] [o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker] - Bean 'org.springframework.ws.config.annotation.DelegatingWsConfiguration' of type [org.springframework.ws.config.annotation.DelegatingWsConfiguration$$SpringCGLIB$$0] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2024-04-13 00:24:13.753 INFO  [traceId=] [main] [o.s.w.s.a.s.AnnotationActionEndpointMapping] - Supporting [WS-Addressing August 2004, WS-Addressing 1.0]
+2024-04-13 00:24:14.192 INFO  [traceId=] [main] [o.s.b.w.embedded.tomcat.TomcatWebServer] - Tomcat initialized with port(s): 8080 (http)
+2024-04-13 00:24:14.208 INFO  [traceId=] [main] [o.apache.coyote.http11.Http11NioProtocol] - Initializing ProtocolHandler ["http-nio-8080"]
+2024-04-13 00:24:14.213 INFO  [traceId=] [main] [o.apache.catalina.core.StandardService] - Starting service [Tomcat]
+2024-04-13 00:24:14.217 INFO  [traceId=] [main] [org.apache.catalina.core.StandardEngine] - Starting Servlet engine: [Apache Tomcat/10.1.19]
+2024-04-13 00:24:14.381 INFO  [traceId=] [main] [o.a.c.c.C.[Tomcat].[localhost].[/]] - Initializing Spring embedded WebApplicationContext
+2024-04-13 00:24:14.381 INFO  [traceId=] [main] [o.s.b.w.s.c.ServletWebServerApplicationContext] - Root WebApplicationContext: initialization completed in 1991 ms
+2024-04-13 00:24:14.964 INFO  [traceId=] [main] [o.apache.coyote.http11.Http11NioProtocol] - Starting ProtocolHandler ["http-nio-8080"]
+2024-04-13 00:24:15.027 INFO  [traceId=] [main] [o.s.b.w.embedded.tomcat.TomcatWebServer] - Tomcat started on port(s): 8080 (http) with context path ''
+2024-04-13 00:24:15.043 INFO  [traceId=] [main] [c.e.particulate.ParticulateApplication] - Started ParticulateApplication in 3.485 seconds (process running for 3.895)
+2024-04-13 00:24:15.920 INFO  [traceId=] [http-nio-8080-exec-1] [o.a.c.c.C.[Tomcat].[localhost].[/]] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-04-13 00:24:15.921 INFO  [traceId=] [http-nio-8080-exec-1] [o.s.web.servlet.DispatcherServlet] - Initializing Servlet 'dispatcherServlet'
+2024-04-13 00:24:15.924 INFO  [traceId=] [http-nio-8080-exec-1] [o.s.web.servlet.DispatcherServlet] - Completed initialization in 2 ms
+2024-04-13 00:24:16.019 INFO  [traceId=] [http-nio-8080-exec-1] [com.zaxxer.hikari.HikariDataSource] - HikariPool-1 - Starting...
+2024-04-13 00:24:16.467 INFO  [traceId=] [http-nio-8080-exec-1] [com.zaxxer.hikari.pool.HikariPool] - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@7d905290
+2024-04-13 00:24:16.473 INFO  [traceId=] [http-nio-8080-exec-1] [com.zaxxer.hikari.HikariDataSource] - HikariPool-1 - Start completed.
+2024-04-13 00:24:16.564 INFO  [traceId=] [http-nio-8080-exec-1] [c.e.p.service.MeasureParticulate] - ======= particulate 시작 ======
