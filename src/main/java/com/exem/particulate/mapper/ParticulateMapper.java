@@ -40,7 +40,7 @@ public interface ParticulateMapper {
     void insertAlertInfo(List<String> csvList);
 
     // 미세먼지 농도 삽입 전 중복 체크
-    int duplPartInfo(PartInfo particulateDTO);
+    int duplPartInfo(List<String> csvList);
 
     // 영업소별 미세먼지 농도 삽입
     void insertPartInfo(List<String> csvList);

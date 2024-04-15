@@ -112,13 +112,13 @@
 	</insert>
 
 	<!-- 영업소별 미세먼지 농도 삽입 -->
-	<insert id="insertPartInfo" parameterType="java.util.HashMap">
+	<insert id="insertPartInfo" parameterType="java.util.List">
 	    INSERT INTO TB_PARTICULATE_INFO (city, station, particulate, fineParticulate, regDt) 
-		VALUES(#{csvList[0]}, #{csvList[2]}, #{csvList[4]}, #{csvList[5]}, #{csvList[1]})
+		VALUES(#{city}, #{station}, #{particulate}, #{fineParticulate}, #{regDT})
 	</insert>
 
 	<!-- 영업소별 미세먼지 농도 전 체크 -->
-	<select id="duplPartInfo" parameterType="com.exem.particulate.model.PartInfo" resultType="Int">
+	<select id="duplPartInfo" parameterType="java.util.List" resultType="Int">
 		SELECT COUNT(*)
 		FROM TB_PARTICULATE_INFO
 		WHERE city=#{city}

@@ -25,7 +25,8 @@ import lombok.AllArgsConstructor;
 
 /*
  * 24.04.11 WebHook 적용 시작
- *  24.04.13 중복 체크까지 수정 완료
+ * - 24.04.13 중복 체크까지 수정 완료
+ * - 24.4.15 영업소 농도 삽입까지 완료
  */
 @Service
 @AllArgsConstructor
@@ -33,7 +34,7 @@ public class MainService {
 
     private final ParticulateMapper partMapper;
     private final TableService tableService;
-    private final MeasureParticulate measureParticulate;
+    private final AlertParticulate alertParticulate;
     private final WebHookService webHookService;
 
     private final Logger log = LoggerFactory.getLogger(MainService.class);
@@ -55,10 +56,8 @@ public class MainService {
             tableService.checkTable();
         }
 
-        
-
         try {
-            measureParticulate.insertParticulate();
+            alertParticulate.alertParticulate();
         } catch (Exception e) {
             log.error("MeasureParticualte에서 오류 => {}", e);
         }
