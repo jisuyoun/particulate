@@ -31,6 +31,10 @@ dependencies {
 	implementation 'org.projectlombok:lombok:1.18.24'
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
 
+	// csv 파일 인코딩 조회
+	implementation group: 'com.github.albfernandez', name: 'juniversalchardet', version: '2.4.0'
+
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
