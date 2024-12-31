@@ -23,15 +23,15 @@ public class TcpClient {
     public static void main(String[] args) {
         String serverAddress = "localhost";
         int serverPort = 8082;
-        
-    try (Socket socket = new Socket(serverAddress, serverPort);
-        OutputStream output = socket.getOutputStream()) {
+
+        try (Socket socket = new Socket(serverAddress, serverPort);
+            OutputStream output = socket.getOutputStream()) {
 
             String csvFilePath = "src\\main\\resources\\csv\\2023년3월_서울시_미세먼지.csv";
             List<DustModel> dustModelList = readDustData(csvFilePath);
             
             for (DustModel dustModel : dustModelList) {
-                String message = String.format("Alert: %s, Station: %s, Fine Dust: %d, Ultra Fine Dust: %d", 
+                String message = String.format("%s, %s, %d, %d", 
                                 dustModel.getDate(), dustModel.getStation(), dustModel.getFineDust(), dustModel.getUltraFineDust());
                 
                 output.write(message.getBytes("UTF-8"));
@@ -62,7 +62,7 @@ public class TcpClient {
                 dustModel.setDate(lineList[0].split(" ")[0]);
                 dustModel.setTime(lineList[0].split(" ")[1]);
                 dustModel.setStation(lineList[1]);
-                
+
                 // 미세먼지 농도 설정
                 if (lineList.length > 3 && !lineList[3].trim().isEmpty()) {
                     dustModel.setFineDust((Integer.parseInt(lineList[3])));
