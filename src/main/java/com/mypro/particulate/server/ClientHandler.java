@@ -66,13 +66,13 @@ public class ClientHandler implements Runnable {
     private void processPm10 (int pm10Value, OutputStream output) throws IOException {
         if (pm10ModelList.get(0).getGrade1() < pm10Value 
                     && pm10Value <= pm10ModelList.get(0).getGrade2()) {
-            output.write("Alert: 미세먼지 보통 상태".getBytes("UTF-8"));
+            output.write("Alert: 미세먼지 보통 상태\n".getBytes("UTF-8"));
             output.flush();
         } else if (pm10Value <= pm10ModelList.get(0).getGrade3()) {
-            output.write("Alert: 미세먼지 나쁨 상태".getBytes("UTF-8"));
+            output.write("Alert: 미세먼지 나쁨 상태\n".getBytes("UTF-8"));
             output.flush();
         } else if (pm10Value >= pm10ModelList.get(0).getGrade4()) {
-            output.write("Alert: 미세먼지 매우 나쁨 상태".getBytes("UTF-8"));
+            output.write("Alert: 미세먼지 매우 나쁨 상태\n".getBytes("UTF-8"));
             output.flush();
         }
     }
@@ -80,13 +80,13 @@ public class ClientHandler implements Runnable {
     private void processPm25 (int pm25Value, OutputStream output) throws IOException {
         if (pm25ModelList.get(0).getGrade1() < pm25Value 
                 && pm25Value <= pm25ModelList.get(0).getGrade2()) {
-            output.write("Alert: 초미세먼지 보통 상태".getBytes("UTF-8"));
+            output.write("Alert: 초미세먼지 보통 상태\n".getBytes("UTF-8"));
             output.flush();
         } else if (pm25Value <= pm25ModelList.get(0).getGrade3()) {
-            output.write("Alert: 초미세먼지 나쁨 상태".getBytes("UTF-8"));
+            output.write("Alert: 초미세먼지 나쁨 상태\n".getBytes("UTF-8"));
             output.flush();
         } else if (pm25Value >= pm25ModelList.get(0).getGrade4()) {
-            output.write("Alert: 초미세먼지 매우 나쁨 상태".getBytes("UTF-8"));
+            output.write("Alert: 초미세먼지 매우 나쁨 상태\n".getBytes("UTF-8"));
             output.flush();
         }
     }

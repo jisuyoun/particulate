@@ -25,7 +25,8 @@ public class TcpClient {
         int serverPort = 8082;
 
         try (Socket socket = new Socket(serverAddress, serverPort);
-            OutputStream output = socket.getOutputStream()) {
+            OutputStream output = socket.getOutputStream();
+            BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"))) {
 
             String csvFilePath = "src\\main\\resources\\csv\\2023년3월_서울시_미세먼지.csv";
             List<DustModel> dustModelList = readDustData(csvFilePath);
@@ -33,10 +34,15 @@ public class TcpClient {
             for (DustModel dustModel : dustModelList) {
                 String message = String.format("%s, %s, %d, %d", 
                                 dustModel.getDate(), dustModel.getStation(), dustModel.getFineDust(), dustModel.getUltraFineDust());
-                
-                output.write(message.getBytes("UTF-8"));
+                output.write(message.getBytes("UTF-8")); // 메시지 전송
 
                 Thread.sleep(100); // 대기 시간이 없을 경우 tcp server에서 한 줄 씩 처리를 못함
+
+                // 서버 응답 읽기
+                String response = input.readLine();
+                System.out.println("서버 응답: " + response);
+
+                Thread.sleep(100);
             }
 
             output.flush();
