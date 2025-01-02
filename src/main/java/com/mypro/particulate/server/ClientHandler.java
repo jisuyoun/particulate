@@ -11,7 +11,8 @@ import com.mypro.particulate.main.model.StandardModel;
 
 /*
  * 2024-12-31 생성
- * 클라이언트의 메시지 처리
+ * 
+ * 서버로 전송된 클라이언트의 메시지 처리
  */
 public class ClientHandler implements Runnable {
     
