@@ -25,7 +25,9 @@ public class TcpClient {
 
             String csvFilePath = "src\\main\\resources\\csv\\2023년3월_서울시_미세먼지.csv";
             DustDataSender dustDataSender = new DustDataSender(csvFilePath, output);
-            dustDataSender.sendData(); // 미세먼지 데이터 전송
+            dustDataSender.sendData(input); // 미세먼지 데이터 전송
+
+            System.out.println("테스트");
 
             // 서버 응답 읽기
             String response;

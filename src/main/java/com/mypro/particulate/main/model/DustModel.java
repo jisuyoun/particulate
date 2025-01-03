@@ -1,5 +1,6 @@
 package com.mypro.particulate.main.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,26 +12,31 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /*
- * 2024-12-23 파일생성
- * 2025-01-02 ALERT_DUST_VALUE 테이블로 변경
+ * 2025-01-03 파일생성
  * 
- * 미세먼지 및 초미세먼지 농도가 좋음 단계를 넘었을 경우 테이블에 해당 내용을 저장한다.
+ * 미세먼지 및 초미세먼지 농도를 서버로 이동시키기 위한 모델
  */
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="ALERT_DUST_VALUE")
+@Table(name="Dust_VALUE")
 public class DustModel {
-
+    
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동 증가
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String date;
-    private String time;
-    private String station;
-    private int fineDust;
-    private int ultraFineDust;
+    @Column(name = "date", length = 20, nullable = false, columnDefinition = "VARCHAR(20) COMMENT '발생한 일시'")
+    private String date;  // 일시
+
+    @Column(name = "station", length = 10, nullable = false, columnDefinition = "VARCHAR(10) COMMENT '영업소'")
+    private String station;  // 영업소
+
+    @Column(name = "fine_dust", length = 5, nullable = false, columnDefinition = "INT COMMENT '미세먼지 농도'")
+    private int fineDust; // 미세먼지 농도
+
+    @Column(name = "ultra_fine_dust", length = 5, nullable = false, columnDefinition = "INT COMMENT '초미세먼지 농도'")
+    private int ultraFineDust; // 초미세먼지 농도
 }

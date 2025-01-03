@@ -36,9 +36,10 @@ public class DustDataSender {
             String line;
             while((line = br.readLine()) != null) {
                 String[] lineList = line.split(",");
+                String[] dateStr = lineList[0].split(" ")[0].split("-");
+                String date = dateStr[0] + dateStr[1] + dateStr[2] + lineList[0].split(" ")[1];
                 DustModel dustModel = new DustModel();
-                dustModel.setDate(lineList[0].split(" ")[0]);
-                dustModel.setTime(lineList[0].split(" ")[1]);
+                dustModel.setDate(date);
                 dustModel.setStation(lineList[1]);
 
                 // 미세먼지 농도 설정
@@ -57,13 +58,20 @@ public class DustDataSender {
     }
 
     // 메시지 전송
-    public void sendData() throws IOException {
+    public void sendData(BufferedReader input) throws IOException {
         try {
             for (DustModel dustModel : this.dustModelList) {
-                String message = String.format("%s, %s, %s, %d, %d",
-                                dustModel.getDate(), dustModel.getTime(), dustModel.getStation(), dustModel.getFineDust(), dustModel.getUltraFineDust());
-                output.write((message + "\n").getBytes("UTF-8")); // 메시지 전송
+                String message = String.format("%s, %s, %d, %d",
+                            dustModel.getDate(), dustModel.getStation(), dustModel.getFineDust(), dustModel.getUltraFineDust());
+                output.write((message).getBytes("UTF-8")); // 메시지 전송
                 output.flush(); // 버퍼 비우고 전송
+
+                // 서버 응답 즉시 읽기
+                String response = input.readLine();
+                if (response != null) {
+                    System.out.println("서버 응답: " + response);
+                }
+
                 Thread.sleep(100); // 스레드 대기를 안 할 경우 데이터가 한 줄로 뭉쳐서 전송이 됨
             }
         } catch (InterruptedException e) {  // throws로 IOException과 함께 보낼 경우 TcpClient에서는 발생할 가능성이 없는 오류로 오류가 남

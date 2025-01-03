@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.mypro.particulate.main.model.DustType;
 import com.mypro.particulate.main.model.StandardModel;
 import com.mypro.particulate.main.repository.StandardRepository;
 
@@ -25,7 +26,7 @@ public class StandardService {
     public void initializeStandardTable () {
          // PM10 데이터 삽입
          StandardModel pm10Model = new StandardModel();
-         pm10Model.setDustType("10");
+         pm10Model.setDustType(DustType.Fine);
          pm10Model.setGrade1(30);
          pm10Model.setGrade2(81);
          pm10Model.setGrade3(150);
@@ -35,7 +36,7 @@ public class StandardService {
 
          // PM2.5 데이터 삽입
          StandardModel pm25Model = new StandardModel();
-         pm25Model.setDustType("2.5");
+         pm25Model.setDustType(DustType.Ultra);
          pm25Model.setGrade1(15);
          pm25Model.setGrade2(35);
          pm25Model.setGrade3(75);

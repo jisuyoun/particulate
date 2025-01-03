@@ -4,9 +4,11 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.mypro.particulate.main.model.StandardModel;
+import com.mypro.particulate.main.service.AlertService;
 import com.mypro.particulate.main.service.StandardService;
 
 /*
@@ -19,15 +21,20 @@ import com.mypro.particulate.main.service.StandardService;
 @Component
 public class TcpServer {
 
-    private final StandardService standardService;
-
+    private final AlertService alertService;
+    
     private final List<StandardModel> standardModelList;
 
-    public TcpServer(StandardService standardService) {
-        this.standardService = standardService;
+    public TcpServer(AlertService alertService, StandardService standardService) {
+        this.alertService = alertService;
 
-        // 기준치 가져오기, 테이블이 없을 경우 테이블 생성
-        this.standardModelList = standardService.getDustStandard();
+        try {
+            // 기준치 가져오기, 테이블이 없을 경우 테이블 생성
+            this.standardModelList = standardService.getDustStandard();
+        } catch (Exception e) {
+            throw new RuntimeException("기준치를 가져오는 중 오류 발생", e);
+        }
+        
         startService();
     }
 
@@ -38,7 +45,12 @@ public class TcpServer {
                 while (true) {
                     Socket socket = serverSocket.accept();
                     System.out.println("새 클라이언트가 연결되었습니다.");
-                    new Thread(new ClientHandler(socket, standardModelList)).start();
+
+                    if (socket.isClosed() || !socket.isConnected()) {
+                        System.out.println("서버와의 연결 끊김");
+                        break;
+                    }
+                    new Thread(new ClientHandler(alertService, socket, standardModelList)).start();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
