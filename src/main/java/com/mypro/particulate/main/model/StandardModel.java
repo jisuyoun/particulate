@@ -33,15 +33,15 @@ public class StandardModel {
     @Column(name = "dust_type", length = 5, nullable = false, columnDefinition = "VARCHAR(5) COMMENT '미세먼지 타입'")
     private DustType dustType;
 
-    @Column(name = "grade1", length = 3, nullable = false, columnDefinition = "INT COMMENT '좋음의 최대값'")
-    private int grade1;
+    @Column(name = "grade1", nullable = false, columnDefinition = "FLOAT COMMENT '좋음의 최대값'")
+    private float grade1;
 
-    @Column(name = "grade2", length=3, nullable=false, columnDefinition="INT COMMENT '보통의 최대값'")
-    private int grade2;
+    @Column(name = "grade2", nullable=false, columnDefinition="FLOAT COMMENT '보통의 최대값'")
+    private float grade2;
 
-    @Column(name="grade3", length=3, nullable=false, columnDefinition="INT COMMENT '나쁨의 최대값'")
-    private int grade3;
+    @Column(name="grade3", nullable=false, columnDefinition="FLOAT COMMENT '나쁨의 최대값'")
+    private float grade3;
 
-    @Column(name="grade4", length=3, nullable=false, columnDefinition="INT COMMENT '매우나쁨의 최대값'")
-    private int grade4;
+    @Column(name="grade4", nullable=false, columnDefinition="FLOAT COMMENT '매우나쁨의 최대값'")
+    private float grade4;
 }

@@ -27,8 +27,6 @@ public class TcpClient {
             DustDataSender dustDataSender = new DustDataSender(csvFilePath, output);
             dustDataSender.sendData(input); // 미세먼지 데이터 전송
 
-            System.out.println("테스트");
-
             // 서버 응답 읽기
             String response;
             while ((response = input.readLine()) != null) {

@@ -27,6 +27,7 @@ public class DustDataSender {
         this.dustModelList = readDustData(csvFilePath);
     }
 
+    // csv 파일 읽기
     private List<DustModel> readDustData (String csvFilePath) throws IOException {
         List<DustModel> dustModelList = new ArrayList<>();
         String encoding = detectFileEncoding(csvFilePath);
