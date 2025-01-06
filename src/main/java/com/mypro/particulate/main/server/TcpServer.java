@@ -1,4 +1,4 @@
-package com.mypro.particulate.server;
+package com.mypro.particulate.main.server;
 
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -6,8 +6,10 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import com.mypro.particulate.main.model.AlertModel;
 import com.mypro.particulate.main.model.StandardModel;
 import com.mypro.particulate.main.service.AlertService;
+import com.mypro.particulate.main.service.DustGradeService;
 import com.mypro.particulate.main.service.StandardService;
 
 /*
@@ -20,18 +22,21 @@ import com.mypro.particulate.main.service.StandardService;
 @Component
 public class TcpServer {
 
+    private final DustGradeService dustGradeService;
     private final AlertService alertService;
-    private final StandardService standardService;
-    
-    private final List<StandardModel> standardModelList;
 
-    public TcpServer(AlertService alertService, StandardService standardService) {
-        this.alertService = alertService;
-        this.standardService = standardService;
+    private final List<StandardModel> standardModelList;
+    private final List<AlertModel> alertModelList;
+
+    public TcpServer(DustGradeService dustGradeService, AlertService alertSerivce, StandardService standardService) {
+        this.dustGradeService = dustGradeService;
+        this.alertService = alertSerivce;
 
         try {
             // 기준치 가져오기, 테이블이 없을 경우 테이블 생성
             this.standardModelList = standardService.getDustStandard();
+            // 경보, 주의보 기준치 가져오기, 테이블이 없을 경우 테이블 생성
+            this.alertModelList = standardService.getDustAlertStandard();
         } catch (Exception e) {
             throw new RuntimeException("기준치를 가져오는 중 오류 발생", e);
         }
@@ -47,7 +52,7 @@ public class TcpServer {
                     Socket socket = serverSocket.accept();
                     System.out.println("새 클라이언트가 연결되었습니다.");
 
-                    new Thread(new ClientHandler(alertService, standardService, socket, standardModelList)).start();
+                    new Thread(new ClientHandler(dustGradeService, alertService, socket, standardModelList, alertModelList)).start();
                 }
             } catch (Exception e) {
                 e.printStackTrace();

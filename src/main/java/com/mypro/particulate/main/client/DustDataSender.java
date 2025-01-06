@@ -1,4 +1,4 @@
-package com.mypro.particulate.client;
+package com.mypro.particulate.main.client;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -54,7 +54,7 @@ public class DustDataSender {
                 dustModelList.add(dustModel);
             }
         }
-        
+
         return dustModelList;
     }
 

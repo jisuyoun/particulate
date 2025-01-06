@@ -1,4 +1,4 @@
-package com.mypro.particulate.client;
+package com.mypro.particulate.main.client;
 
 import java.io.BufferedReader;
 import java.io.IOException;
