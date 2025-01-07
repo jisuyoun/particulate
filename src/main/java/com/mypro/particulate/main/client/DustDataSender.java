@@ -62,23 +62,31 @@ public class DustDataSender {
     public void sendData(BufferedReader input) throws IOException {
         try {
             for (DustModel dustModel : this.dustModelList) {
-                String message = String.format("%s, %s, %d, %d",
+                String message = String.format("%s, %s, %d, %d\n",
                             dustModel.getDate(), dustModel.getStation(), dustModel.getFineDust(), dustModel.getUltraFineDust());
                 output.write((message).getBytes("UTF-8")); // 메시지 전송
                 output.flush(); // 버퍼 비우고 전송
 
                 // 서버 응답 즉시 읽기
-                String response = input.readLine();
-                if (response != null) {
-                    System.out.println("서버 응답: " + response);
+                // String response = input.readLine(); // 이 방법은 한 줄 씩만 읽음
+                StringBuilder responseBuilder = new StringBuilder();
+                String responseLine;
+                while ((responseLine = input.readLine()) != null) {
+                    if (responseLine.trim().isEmpty()) {
+                        break;
+                    }
+                    responseBuilder.append(responseLine).append("\n");
                 }
+                System.out.println(responseBuilder.toString());
 
-                Thread.sleep(100); // 스레드 대기를 안 할 경우 데이터가 한 줄로 뭉쳐서 전송이 됨
+                Thread.sleep(100);
             }
-        } catch (InterruptedException e) {  // throws로 IOException과 함께 보낼 경우 TcpClient에서는 발생할 가능성이 없는 오류로 오류가 남
-            Thread.currentThread().interrupt(); // 스레드의 인터럽트 상태를 복원
-            throw new IOException("데이터 전송 중 인터럽트 발생", e);
-        }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt(); // 인터럽트 상태 복원
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } 
     }
         
     // csv 인코딩 감지

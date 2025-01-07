@@ -5,10 +5,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.mypro.particulate.main.model.AlertModel;
 
 /*
- * 2025-01-06 파일 생성
+ * 2025-01-07
  * 
- * 경보, 주의보에 대한 경보 관련 Repository
+ * 주의보, 경보가 뜬 데이터들 DB에 저장 Repository
  */
-public interface AlertRepository extends JpaRepository<AlertModel, Long> {
+public interface AlertRepository extends JpaRepository<AlertModel, Long>  {
     
 }

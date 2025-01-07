@@ -23,8 +23,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "STANDARDS")
-public class StandardModel {
+@Table(name = "GRADE_STANDARDS")
+public class GradeStandardModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동 증가
     private Long id;

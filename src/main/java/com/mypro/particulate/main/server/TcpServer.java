@@ -6,8 +6,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.mypro.particulate.main.model.AlertModel;
-import com.mypro.particulate.main.model.StandardModel;
+import com.mypro.particulate.main.model.AlertStandardModel;
+import com.mypro.particulate.main.model.GradeStandardModel;
 import com.mypro.particulate.main.service.AlertService;
 import com.mypro.particulate.main.service.DustGradeService;
 import com.mypro.particulate.main.service.StandardService;
@@ -25,8 +25,8 @@ public class TcpServer {
     private final DustGradeService dustGradeService;
     private final AlertService alertService;
 
-    private final List<StandardModel> standardModelList;
-    private final List<AlertModel> alertModelList;
+    private final List<GradeStandardModel> standardModelList;
+    private final List<AlertStandardModel> alertModelList;
 
     public TcpServer(DustGradeService dustGradeService, AlertService alertSerivce, StandardService standardService) {
         this.dustGradeService = dustGradeService;

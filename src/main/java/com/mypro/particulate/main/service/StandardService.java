@@ -4,10 +4,10 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.mypro.particulate.main.model.AlertModel;
+import com.mypro.particulate.main.model.AlertStandardModel;
 import com.mypro.particulate.main.model.DustType;
-import com.mypro.particulate.main.model.StandardModel;
-import com.mypro.particulate.main.repository.AlertRepository;
+import com.mypro.particulate.main.model.GradeStandardModel;
+import com.mypro.particulate.main.repository.AlertStandardRepository;
 import com.mypro.particulate.main.repository.StandardRepository;
 
 /*
@@ -19,40 +19,40 @@ import com.mypro.particulate.main.repository.StandardRepository;
 public class StandardService {
 
     private final StandardRepository standardRepository;
-    private final AlertRepository alertRepository;
+    private final AlertStandardRepository alertStandardRepository;
 
-    public StandardService (StandardRepository standardRepository, AlertRepository alertRepository) {
+    public StandardService (StandardRepository standardRepository, AlertStandardRepository alertStandardRepository) {
         this.standardRepository = standardRepository;
-        this.alertRepository = alertRepository;
+        this.alertStandardRepository = alertStandardRepository;
     }
 
     // 좋음, 보통, 나쁨, 매우나쁨 초기 데이터 생성
     private void initializeStandardTable () {
         // PM10 데이터 삽입
-        StandardModel standardModel = new StandardModel();
-        standardModel.setDustType(DustType.Fine);
-        standardModel.setGrade1(30);
-        standardModel.setGrade2(81);
-        standardModel.setGrade3(150);
-        standardModel.setGrade4(151);
+        GradeStandardModel gradeStandardModel = new GradeStandardModel();
+        gradeStandardModel.setDustType(DustType.Fine);
+        gradeStandardModel.setGrade1(30);
+        gradeStandardModel.setGrade2(81);
+        gradeStandardModel.setGrade3(150);
+        gradeStandardModel.setGrade4(151);
 
-        standardRepository.save(standardModel);
+        standardRepository.save(gradeStandardModel);
 
         // PM2.5 데이터 삽입
-        standardModel = new StandardModel();
-        standardModel.setDustType(DustType.Ultra);
-        standardModel.setGrade1(15);
-        standardModel.setGrade2(35);
-        standardModel.setGrade3(75);
-        standardModel.setGrade4(76);
+        gradeStandardModel = new GradeStandardModel();
+        gradeStandardModel.setDustType(DustType.Ultra);
+        gradeStandardModel.setGrade1(15);
+        gradeStandardModel.setGrade2(35);
+        gradeStandardModel.setGrade3(75);
+        gradeStandardModel.setGrade4(76);
 
-        standardRepository.save(standardModel);
+        standardRepository.save(gradeStandardModel);
    }
 
     // 좋음, 보통, 나쁨, 매우나쁨 기준치 가져오기
-    public List<StandardModel> getDustStandard () {
+    public List<GradeStandardModel> getDustStandard () {
 
-        List<StandardModel> standardModelList = standardRepository.findAll();
+        List<GradeStandardModel> standardModelList = standardRepository.findAll();
 
         // 없을 경우 테이블 생성
         if (standardModelList.isEmpty()) {
@@ -66,38 +66,38 @@ public class StandardService {
     
     // 주의보, 경보 초기 데이터 생성
     private void initializeAlertStandardTable() {
-        AlertModel alertModel = new AlertModel();
-        alertModel.setDustType(DustType.Fine);
-        alertModel.setAlertGrade1(150);
-        alertModel.setGrade1ThresholdTime(2);
-        alertModel.setAlertGrade2(300);
-        alertModel.setGrade2ThresholdTime(2);
-        alertModel.setReleaseGrade1(100);
-        alertModel.setReleaseGrade2(150);
+        AlertStandardModel AlertStandardModel = new AlertStandardModel();
+        AlertStandardModel.setDustType(DustType.Fine);
+        AlertStandardModel.setAlertGrade1(150);
+        AlertStandardModel.setGrade1ThresholdTime(2);
+        AlertStandardModel.setAlertGrade2(300);
+        AlertStandardModel.setGrade2ThresholdTime(2);
+        AlertStandardModel.setReleaseGrade1(100);
+        AlertStandardModel.setReleaseGrade2(150);
 
-        alertRepository.save(alertModel);
+        alertStandardRepository.save(AlertStandardModel);
 
-        alertModel = new AlertModel();
-        alertModel.setDustType(DustType.Ultra);
-        alertModel.setAlertGrade1(75);
-        alertModel.setGrade1ThresholdTime(2);
-        alertModel.setAlertGrade2(150);
-        alertModel.setGrade2ThresholdTime(2);
-        alertModel.setReleaseGrade1(35);
-        alertModel.setReleaseGrade2(75);
+        AlertStandardModel = new AlertStandardModel();
+        AlertStandardModel.setDustType(DustType.Ultra);
+        AlertStandardModel.setAlertGrade1(75);
+        AlertStandardModel.setGrade1ThresholdTime(2);
+        AlertStandardModel.setAlertGrade2(150);
+        AlertStandardModel.setGrade2ThresholdTime(2);
+        AlertStandardModel.setReleaseGrade1(35);
+        AlertStandardModel.setReleaseGrade2(75);
 
-        alertRepository.save(alertModel);
+        alertStandardRepository.save(AlertStandardModel);
     }
 
     // 주의보, 경보 기준치 가져오기
-    public List<AlertModel> getDustAlertStandard() {
+    public List<AlertStandardModel> getDustAlertStandard() {
         
-        List<AlertModel> alertModelList = alertRepository.findAll();
+        List<AlertStandardModel> alertModelList = alertStandardRepository.findAll();
 
         // 없을 경우 테이블 생성
         if (alertModelList.isEmpty()) {
             initializeAlertStandardTable();
-            alertModelList = alertRepository.findAll();
+            alertModelList = alertStandardRepository.findAll();
         }
         
         return alertModelList;
