@@ -28,10 +28,11 @@ public class AlertService {
     }
 
     public String process10AlertData(String[] messageList, AlertStandardModel AlertStandardModel) {
+        String mapKey = messageList[1] + "#Fine";
         float value = Float.parseFloat(messageList[2]);
-        alertStatusPm10Tracker.update(value, AlertStandardModel);
+        alertStatusPm10Tracker.update(mapKey, value, AlertStandardModel);
 
-        String message = alertStatusPm10Tracker.checkAlert(AlertStandardModel);
+        String message = alertStatusPm10Tracker.checkAlert(mapKey, AlertStandardModel);
         if (message != null && !message.contains("해제")) {
             AlertModel alertModel = new AlertModel();
             alertModel.setDate(messageList[0]);
@@ -46,10 +47,11 @@ public class AlertService {
     }
 
     public String process25AlertData(String[] messageList, AlertStandardModel AlertStandardModel) {
+        String mapKey = messageList[1] + "#Ultra";
         float value = Float.parseFloat(messageList[3]);
-        alertStatusPm25Tracker.update(value, AlertStandardModel);
+        alertStatusPm25Tracker.update(mapKey, value, AlertStandardModel);
 
-        String message = alertStatusPm25Tracker.checkAlert(AlertStandardModel);
+        String message = alertStatusPm25Tracker.checkAlert(mapKey, AlertStandardModel);
         if (message != null && !message.contains("해제")) {
             AlertModel alertModel = new AlertModel();
             alertModel.setDate(messageList[0]);

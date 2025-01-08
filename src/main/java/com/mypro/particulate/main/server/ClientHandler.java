@@ -46,19 +46,19 @@ public class ClientHandler implements Runnable {
                 
             byte[] buf = new byte[1024];
             int bytesRead;
+            StringBuilder response = new StringBuilder();
 
             while ((bytesRead = input.read(buf)) != -1) {
                 String message = new String(buf, 0, bytesRead, "UTF-8");
+                System.out.println(message);
+
                 String[] messageList = message.split(", ");
     
                 // PM10 처리
                 String pm10Grade = dustGradeService.processDustData(messageList, output, pm10StandardModel);
-                StringBuilder response = new StringBuilder();
-
                 if (pm10Grade != null) {
                     response.append(pm10Grade).append("\n"); // PM10 상태 추가
                 }
-
                 String pm10Alert = alertService.process10AlertData(messageList, pm10AlertModel);
                 if (pm10Alert != null) {
                     pm10Alert = String.format(pm10Alert, messageList[0], messageList[1], "미세먼지");
@@ -70,20 +70,22 @@ public class ClientHandler implements Runnable {
                 if (pm25Grade != null) {
                     response.append(pm25Grade).append("\n"); // PM2.5 상태 추가
                 }
-
                 String pm25Alert = alertService.process25AlertData(messageList, pm25AlertModel);
                 if (pm25Alert != null) {
                     pm25Alert = String.format(pm25Alert, messageList[0], messageList[1], "초미세먼지");
                     response.append(pm25Alert).append("\n"); // PM2.5 경고 추가
                 }
 
+                // 클라이언트에 한 데이터가 끝났음을 알림
+                response.append("END").append("\n");
+                
                 // 응답 전송
                 if (response.length() > 0) {
                     output.write(response.toString().getBytes("UTF-8"));
-                    output.write("\n".getBytes("UTF-8"));
                     output.flush();
                 }
             }
+            
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

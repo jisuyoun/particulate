@@ -11,12 +11,12 @@ import org.springframework.stereotype.Component;
 public class AlertStatusPm25Tracker extends AlertStatus {
 
     @Override
-    public void update(Float value, AlertStandardModel AlertStandardModel) {
-        super.update(value, AlertStandardModel);
+    public void update(String mapKey, float value, AlertStandardModel alertStandardModel) {
+        super.update(mapKey, value, alertStandardModel);
     }
 
     @Override
-    public String checkAlert(AlertStandardModel AlertStandardModel) {
-        return super.checkAlert(AlertStandardModel);
+    public String checkAlert(String mapKey,AlertStandardModel alertStandardModel) {
+        return super.checkAlert(mapKey, alertStandardModel);
     }
 }

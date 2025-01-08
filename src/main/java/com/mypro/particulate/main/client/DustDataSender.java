@@ -63,27 +63,23 @@ public class DustDataSender {
         try {
             for (DustModel dustModel : this.dustModelList) {
                 String message = String.format("%s, %s, %d, %d\n",
-                            dustModel.getDate(), dustModel.getStation(), dustModel.getFineDust(), dustModel.getUltraFineDust());
-                output.write((message).getBytes("UTF-8")); // 메시지 전송
-                output.flush(); // 버퍼 비우고 전송
-
-                // 서버 응답 즉시 읽기
-                // String response = input.readLine(); // 이 방법은 한 줄 씩만 읽음
+                                    dustModel.getDate(), dustModel.getStation(), dustModel.getFineDust(), dustModel.getUltraFineDust());
+                output.write(message.getBytes("UTF-8"));
+                output.flush();
+                
                 StringBuilder responseBuilder = new StringBuilder();
                 String responseLine;
-                while ((responseLine = input.readLine()) != null) {
-                    if (responseLine.trim().isEmpty()) {
+
+                while((responseLine = input.readLine()) != null) {
+                    if (responseLine.trim().equals("END")) {
                         break;
                     }
                     responseBuilder.append(responseLine).append("\n");
                 }
-                System.out.println(responseBuilder.toString());
 
+                System.out.println(responseBuilder.toString());
                 Thread.sleep(100);
             }
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt(); // 인터럽트 상태 복원
-            e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         } 
@@ -91,7 +87,6 @@ public class DustDataSender {
         
     // csv 인코딩 감지
     private String detectFileEncoding(String csvFilePath) throws IOException {
-        
         try (FileInputStream fis = new FileInputStream(csvFilePath)) {
             byte[] buf = new byte[4096];
             UniversalDetector detector = new UniversalDetector(null);

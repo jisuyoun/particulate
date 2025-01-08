@@ -15,7 +15,6 @@ import java.net.Socket;
 public class TcpClient {
 
     public static void main(String[] args) {
-
         String serverAddress = "localhost";
         int serverPort = 8082;
         
