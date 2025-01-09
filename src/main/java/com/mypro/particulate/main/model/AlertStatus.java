@@ -91,7 +91,7 @@ class AlertStatus {
             
             return "[알림] %s %s 영업소: %s 경보 해제";
         }
-        
+
         // 주의보 해제 알림
         if (alertStatusModel.grade1Release) {
             alertStatusModel.grade1Release = false;

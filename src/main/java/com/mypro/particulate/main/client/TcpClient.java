@@ -6,6 +6,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /*
  * 2024-12-23 파일 생성
  * 2025-01-02 서버 응답 읽기만 하는 것으로 변경
@@ -14,6 +17,8 @@ import java.net.Socket;
  */
 public class TcpClient {
 
+    private final static Logger log = LoggerFactory.getLogger(TcpClient.class);
+    
     public static void main(String[] args) {
         String serverAddress = "localhost";
         int serverPort = 8082;
@@ -26,7 +31,7 @@ public class TcpClient {
             DustDataSender dustDataSender = new DustDataSender(csvFilePath, output);
             dustDataSender.sendData(input); // 미세먼지 데이터 전송
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("클라이언트 소켓 생성 중 오류 발생: {}", e.getMessage(), e);
         }
     }
 }

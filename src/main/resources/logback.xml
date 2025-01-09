@@ -1,0 +1,26 @@
+<configuration>
+    <appender name="CLIENT_FILE" class="ch.qos.logback.core.FileAppender">
+        <file>logs/tcp_client.log</file>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} - %msg%n</pattern>
+            <charset>EUC-KR</charset>
+        </encoder>
+    </appender>
+
+    <appender name="CLIENT_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} - %msg%n</pattern>
+            <charset>EUC-KR</charset>
+        </encoder>
+    </appender>
+
+    <logger name="com.mypro.particulate.main.client" level="INFO">
+        <appender-ref ref="CLIENT_FILE" />
+        <appender-ref ref="CLIENT_CONSOLE" />
+    </logger>
+
+    <root level="INFO">
+        <appender-ref ref="CLIENT_FILE" />
+        <appender-ref ref="CLIENT_CONSOLE" />                                   1
+    </root>
+</configuration>

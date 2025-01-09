@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.mozilla.universalchardet.UniversalDetector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.mypro.particulate.main.model.DustModel;
 
@@ -26,6 +28,8 @@ public class DustDataSender {
         this.output = output;
         this.dustModelList = readDustData(csvFilePath);
     }
+
+    private static final Logger log = LoggerFactory.getLogger(DustDataSender.class);
 
     // csv 파일 읽기
     private List<DustModel> readDustData (String csvFilePath) throws IOException {
@@ -76,12 +80,11 @@ public class DustDataSender {
                     }
                     responseBuilder.append(responseLine).append("\n");
                 }
-
-                System.out.println(responseBuilder.toString());
+                log.info(responseBuilder.toString());
                 Thread.sleep(100);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("클라이언트 메시지 전송 중 오류 발생: {}", e.getMessage(), e);
         } 
     }
         

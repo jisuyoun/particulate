@@ -2,6 +2,8 @@ package com.mypro.particulate.main.service;
 
 import java.io.OutputStream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.mypro.particulate.main.model.DustGradeModel;
@@ -18,6 +20,8 @@ import com.mypro.particulate.main.repository.DustGradeRepository;
 public class DustGradeService {
     
     private final DustGradeRepository dustGradeRepository;
+
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
     public DustGradeService (DustGradeRepository dustGradeRepository) {
         this.dustGradeRepository = dustGradeRepository;
@@ -44,11 +48,11 @@ public class DustGradeService {
             } else if (gradeStandardModel.getDustType() == DustType.Ultra) {
                 return Float.parseFloat(messageList[3]);
             } else {
-                System.out.println("[오류] 알 수 없는 DustType: " + gradeStandardModel.getDustType());
+                log.error("알 수 없는 DustType: " + gradeStandardModel.getDustType());
                 return null;
             }
         } catch (Exception e) {
-            System.out.println("[오류] 먼지 추출 중 오류 발생: " + e.getMessage());
+            log.error("먼지 추출 중 오류 발생: {}", e.getMessage(), e);
             return null;
         }
     }
@@ -74,7 +78,7 @@ public class DustGradeService {
             status = "매우나쁨";
             grade = "3";
         } else {
-            System.out.println("[오류] 알 수 없는 수치 발생: " + value);
+            log.error("[오류] 알 수 없는 수치 발생: " + value);
             return null;
         }
 

@@ -7,6 +7,9 @@ import java.net.Socket;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.mypro.particulate.main.model.AlertStandardModel;
 import com.mypro.particulate.main.model.DustType;
 import com.mypro.particulate.main.model.GradeStandardModel;
@@ -29,6 +32,8 @@ public class ClientHandler implements Runnable {
     private final AlertStandardModel pm10AlertModel;
     private final AlertStandardModel pm25AlertModel;
 
+    private final Logger log = LoggerFactory.getLogger(getClass());
+    
     public ClientHandler(DustGradeService dustGradeService, AlertService alertService, Socket socket, List<GradeStandardModel> standardModelList, List<AlertStandardModel> alertModelList) {
         this.dustGradeService = dustGradeService;
         this.alertService = alertService;
@@ -50,8 +55,6 @@ public class ClientHandler implements Runnable {
 
             while ((bytesRead = input.read(buf)) != -1) {
                 String message = new String(buf, 0, bytesRead, "UTF-8");
-                System.out.println(message);
-
                 String[] messageList = message.split(", ");
     
                 // PM10 처리
@@ -87,12 +90,12 @@ public class ClientHandler implements Runnable {
             }
             
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("소켓 통신 오류 발생: {}", e.getMessage(), e);
         } finally {
             try {
                 socket.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error("소켓 닫기 오류: {}", e.getMessage(), e);
             }
         }
     }
