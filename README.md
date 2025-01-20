@@ -39,4 +39,8 @@ javac -cp target/particulate-0.0.1-SNAPSHOT.jar src/main/java/com/mypro/particul
 5. 클라이언트를 실행시킵니다.
 ```bash
 java -cp target/particulate-0.0.1-SNAPSHOT.jar:src/main/java com.mypro.particulate.main.client.TcpClient
+<<<<<<< HEAD
 ```
+=======
+```
+>>>>>>> 4ec1f153ead69321d604461a25cf00daf10f8060
