@@ -51,11 +51,11 @@ public class ClientHandler implements Runnable {
                 
             byte[] buf = new byte[1024];
             int bytesRead;
-            StringBuilder response = new StringBuilder();
 
             while ((bytesRead = input.read(buf)) != -1) {
                 String message = new String(buf, 0, bytesRead, "UTF-8");
                 String[] messageList = message.split(", ");
+                StringBuilder response = new StringBuilder();
     
                 // PM10 처리
                 String pm10Grade = dustGradeService.processDustData(messageList, output, pm10StandardModel);

@@ -20,7 +20,7 @@
     </logger>
 
     <root level="INFO">
-        <appender-ref ref="CLIENT_FILE" />
-        <appender-ref ref="CLIENT_CONSOLE" />                                   1
+       <!-- <appender-ref ref="CLIENT_FILE" />
+        <appender-ref ref="CLIENT_CONSOLE" />   -->                                1
     </root>
 </configuration>

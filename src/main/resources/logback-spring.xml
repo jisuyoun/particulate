@@ -20,7 +20,7 @@
     </logger>
 
     <root level="INFO">
-        <appender-ref ref="SERVER_FILE" />
-        <appender-ref ref="SERVER_CONSOLE" />
+        <!--<appender-ref ref="SERVER_FILE" />
+        <appender-ref ref="SERVER_CONSOLE" />-->
     </root>
 </configuration>
