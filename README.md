@@ -12,31 +12,33 @@
 ## 기술 스택
 - Java 17
 - Spring Boot 3.4
-- SLF4J
 - Gradle
+- MariaDB
 
 ## 설치 및 실행 방법
 1. 이 저장소를 클론합니다.
 ```bash
 https://github.com/jisuyoun/particulate.git
-
 ```
+
 2. 필요한 라이브러리를 설치합니다.
 ```bash
 ./gradlew build
 ```
 
-3. 서버를 실행시킵니다.
+3. resource/csv 경로에 읽히고자 하는 csv 파일을 넣습니다.
+
+4. 서버를 실행시킵니다.
 ```bash
 mvn spring-boot:run
 ```
 
-4. 클라이언트를 컴파일합니다.
+5. 클라이언트를 컴파일합니다.
 ```bash
 javac -cp target/particulate-0.0.1-SNAPSHOT.jar src/main/java/com/mypro/particulate/main/client/TcpClient.java
 ```
 
-5. 클라이언트를 실행시킵니다.
+6. 클라이언트를 실행시킵니다.
 ```bash
 java -cp target/particulate-0.0.1-SNAPSHOT.jar:src/main/java com.mypro.particulate.main.client.TcpClient
 ```
