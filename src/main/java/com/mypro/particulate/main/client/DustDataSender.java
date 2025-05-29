@@ -41,8 +41,8 @@ public class DustDataSender {
             String line;
             while((line = br.readLine()) != null) {
                 String[] lineList = line.split(",");
-                String[] dateStr = lineList[0].split(" ")[0].split("-");
-                String date = dateStr[0] + dateStr[1] + dateStr[2] + lineList[0].split(" ")[1];
+                String date = lineList[0];
+                
                 DustModel dustModel = new DustModel();
                 dustModel.setDate(date);
                 dustModel.setStation(lineList[1]);

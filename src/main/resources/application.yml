@@ -2,9 +2,9 @@ spring:
   application:
     name: particulate
   datasource:
-    url: jdbc:mariadb://127.0.0.1:3006/airquality?useUnicode=true&serverTimezone=Asia/Seoul
+    url: jdbc:mariadb://127.0.0.1:3306/airquality?useUnicode=true&serverTimezone=Asia/Seoul
     username: root
-    password: Root123!@#
+    password: Root123
   jpa:
     hibernate:
       ddl-auto: update

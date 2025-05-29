@@ -41,3 +41,13 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+tasks.register('runTcpClient', JavaExec) {
+    group = 'Execution'
+    description = 'Runs the TcpClient main class' 
+
+    mainClass = 'com.mypro.particulate.main.client.TcpClient'
+	
+	classpath = sourceSets.main.runtimeClasspath
+}
+
